@@ -46,7 +46,7 @@ export const Search: FC = () => {
         className='w-full border-b border-neutral-700 bg-transparent p-2 text-neutral-200 transition-colors duration-200 focus:border-neutral-500'
         placeholder='Type to search'
       />
-      {suggestions?.length > 0 && (
+      {suggestions.length > 0 && (
         <SearchSuggestions
           isOpen={isSuggestionsOpen}
           items={suggestions}

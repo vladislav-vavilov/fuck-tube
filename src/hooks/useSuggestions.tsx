@@ -8,7 +8,7 @@ export const useSuggestions = () => {
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
 
   const queryClient = useQueryClient()
-  const { data: suggestions } = useQuery({
+  const { data: suggestions = [] } = useQuery({
     queryKey: ['suggestions'],
     queryFn: () =>
       fetch(`${API_URL}/suggestions?query=${query}`).then((res) => res.json()),
@@ -26,19 +26,19 @@ export const useSuggestions = () => {
   }
 
   const prevSuggestion = useCallback(() => {
-    if (suggestions?.length === 0) return
+    if (suggestions.length === 0) return
 
     setSelectedSuggestionIndex((index) => {
       if (index > 0) return index - 1
-      return suggestions?.length - 1 // Loop around if at the start
+      return suggestions.length - 1 // Loop around if at the start
     })
   }, [suggestions])
 
   const nextSuggestion = useCallback(() => {
-    if (suggestions?.length === 0) return
+    if (suggestions.length === 0) return
 
     setSelectedSuggestionIndex((index) => {
-      if (index < suggestions?.length - 1) return index + 1
+      if (index < suggestions.length - 1) return index + 1
       return 0 // Loop around if at the end
     })
   }, [suggestions])
