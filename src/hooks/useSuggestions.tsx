@@ -50,19 +50,19 @@ export const useSuggestions = () => {
     }
   }
 
-  const prevSuggestionIndex = useCallback(() => {
+  const prevSuggestionIndex = () => {
     if (selectedSuggestionIndex > 0) {
       return selectedSuggestionIndex - 1
     }
     return suggestions.length - 1 // Loop around if at the start
-  }, [selectedSuggestionIndex, suggestions])
+  }
 
-  const nextSuggestionIndex = useCallback(() => {
+  const nextSuggestionIndex = () => {
     if (selectedSuggestionIndex < suggestions.length - 1) {
       return selectedSuggestionIndex + 1
     }
     return 0 // Loop around if at the end
-  }, [selectedSuggestionIndex, suggestions])
+  }
 
   const selectSuggestion = useCallback(
     (direction: 'prev' | 'next') => {
