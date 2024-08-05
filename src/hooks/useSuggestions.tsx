@@ -25,39 +25,36 @@ export const useSuggestions = () => {
     invalidateSuggestions()
   }
 
-  const prevSuggestion = useCallback(() => {
-    if (suggestions.length === 0) return
-
-    setSelectedSuggestionIndex((index) => {
-      if (index > 0) return index - 1
-      return suggestions.length - 1 // Loop around if at the start
-    })
-  }, [suggestions])
-
-  const nextSuggestion = useCallback(() => {
-    if (suggestions.length === 0) return
-
-    setSelectedSuggestionIndex((index) => {
-      if (index < suggestions.length - 1) return index + 1
-      return 0 // Loop around if at the end
-    })
-  }, [suggestions])
-
-  // TODO: Get rid of effect. Set query inside of prev/next suggestion functions
-  useEffect(() => {
-    if (selectedSuggestionIndex > -1) {
-      setQuery(suggestions[selectedSuggestionIndex])
+  const prevSuggestionIndex = useCallback(() => {
+    if (selectedSuggestionIndex > 0) {
+      return selectedSuggestionIndex - 1
     }
-  }, [selectedSuggestionIndex])
+    return suggestions.length - 1 // Loop around if at the start
+  }, [selectedSuggestionIndex, suggestions])
+
+  const nextSuggestionIndex = useCallback(() => {
+    if (selectedSuggestionIndex < suggestions.length - 1) {
+      return selectedSuggestionIndex + 1
+    }
+    return 0 // Loop around if at the end
+  }, [selectedSuggestionIndex, suggestions])
+
+  const selectSuggestion = useCallback(
+    (direction: 'prev' | 'next') => {
+      if (suggestions.length === 0) return
+
+      const newSuggestionIndex =
+        direction === 'prev' ? prevSuggestionIndex() : nextSuggestionIndex()
+      setSelectedSuggestionIndex(newSuggestionIndex)
+      setQuery(suggestions[newSuggestionIndex])
+    },
+    [suggestions, prevSuggestionIndex, nextSuggestionIndex]
+  )
 
   return {
     query,
     suggestions,
     selectedSuggestionIndex,
-    func: {
-      onQueryChange,
-      prevSuggestion,
-      nextSuggestion
-    }
+    func: { onQueryChange, selectSuggestion }
   }
 }

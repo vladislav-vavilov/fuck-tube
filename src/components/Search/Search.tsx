@@ -10,7 +10,7 @@ export const Search: FC = () => {
     query,
     suggestions,
     selectedSuggestionIndex,
-    func: { onQueryChange, prevSuggestion, nextSuggestion }
+    func: { onQueryChange, selectSuggestion }
   } = useSuggestions()
 
   const handleSearch = (searchQuery: string = query) => {
@@ -24,11 +24,11 @@ export const Search: FC = () => {
         break
       case 'ArrowUp':
         e.preventDefault()
-        prevSuggestion()
+        selectSuggestion('prev')
         break
       case 'ArrowDown':
         e.preventDefault()
-        nextSuggestion()
+        selectSuggestion('next')
         break
       default:
         break
