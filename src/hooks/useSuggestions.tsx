@@ -1,32 +1,24 @@
 import { ChangeEvent, useCallback, useState } from 'react'
 import { useDebounce } from './useDebounce'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { API_URL } from '@/constants'
 import { getSearchHistory } from '@/helpers'
 
 export const useSuggestions = () => {
   const [query, setQuery] = useState('')
+  const [suggestions, setSuggestions] = useState(getSearchHistory)
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
 
-  const searchHistory = getSearchHistory()
-  const defaultSuggestions = searchHistory || []
-
-  const queryClient = useQueryClient()
-  const { data: suggestions = defaultSuggestions } = useQuery({
-    queryKey: ['suggestions'],
-    queryFn: () =>
-      fetch(`${API_URL}/suggestions?query=${query}`).then((res) => res.json()),
-    enabled: !!query
-  })
-
-  const invalidateSuggestions = useDebounce(() => {
-    queryClient.invalidateQueries({ queryKey: ['suggestions'] })
+  const fetchSuggestions = useDebounce((query) => {
+    fetch(`${API_URL}/suggestions?query=${query}`)
+      .then((res) => res.json())
+      .then(setSuggestions)
   }, 500)
 
   const onQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value)
+    const queryValue = e.target.value
+    setQuery(queryValue)
     setSelectedSuggestionIndex(-1)
-    invalidateSuggestions()
+    queryValue && fetchSuggestions(queryValue)
   }
 
   const prevSuggestionIndex = useCallback(() => {

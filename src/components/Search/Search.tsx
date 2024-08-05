@@ -6,7 +6,7 @@ import { useSuggestions } from '@/hooks/useSuggestions'
 import { appendSearchHistory } from '@/helpers'
 
 export const Search: FC = () => {
-  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(true)
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
   const {
     query,
     suggestions,

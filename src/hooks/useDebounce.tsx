@@ -1,10 +1,13 @@
 import { useRef } from 'react'
 
-export const useDebounce = (callback: () => void, delay: number) => {
+export const useDebounce = (
+  callback: (...args: unknown[]) => void,
+  delay: number
+) => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  return () => {
+  return (...args: unknown[]) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(callback, delay)
+    timeoutRef.current = setTimeout(() => callback(...args), delay)
   }
 }
