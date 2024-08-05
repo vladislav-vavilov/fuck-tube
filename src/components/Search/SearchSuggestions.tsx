@@ -25,12 +25,12 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
         }
       )}
     >
-      {items.map(({ value, type }, index) => (
+      {items.map((suggestion, index) => (
         <SearchSuggestionsItem
-          key={value}
-          suggestion={`[${type}]: ${value}`}
+          key={suggestion.value}
+          suggestion={suggestion}
           selected={index === selectedItemIndex}
-          onClick={() => handleSearch(value)}
+          onClick={() => handleSearch(suggestion.value)}
         />
       ))}
     </ul>
