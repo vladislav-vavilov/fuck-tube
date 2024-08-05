@@ -17,8 +17,8 @@ export const SearchSuggestionsItem: FC<SearchSuggestionsItemProps> = ({
 
   useEffect(() => {
     if (!ref.current || !selected) return
-    ref.current.scrollIntoView(false)
-  }, [selected])
+    ref.current.scrollIntoView({ block: 'nearest' })
+  }, [ref, selected])
 
   return (
     <li
