@@ -32,7 +32,10 @@ export const SearchSuggestionsItem: FC<SearchSuggestionsItemProps> = ({
       )}
     >
       <span>{suggestion}</span>
-      <button className='invisible rounded-md p-1 opacity-0 transition-all duration-200 hover:bg-neutral-500/50 group-hover:visible group-hover:opacity-100'>
+      <button
+        onClick={(e) => e.stopPropagation()}
+        className='invisible rounded-md p-1 opacity-0 transition-all duration-200 hover:bg-neutral-500/50 group-hover:visible group-hover:opacity-100'
+      >
         <IoMdClose />
       </button>
     </li>

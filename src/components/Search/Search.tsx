@@ -4,6 +4,7 @@ import { FC, KeyboardEvent, useState } from 'react'
 import { SearchSuggestions } from '@/components/Search/SearchSuggestions'
 import { useSuggestions } from '@/hooks/useSuggestions'
 import { appendSearchHistory } from '@/helpers'
+import { useClickAway } from '@/hooks/useClickAway'
 
 export const Search: FC = () => {
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
@@ -13,6 +14,10 @@ export const Search: FC = () => {
     selectedSuggestionIndex,
     func: { onQueryChange, selectSuggestion }
   } = useSuggestions()
+
+  const ref = useClickAway(() => {
+    setIsSuggestionsOpen(false)
+  })
 
   const handleSearch = (searchQuery: string = query) => {
     console.log(searchQuery)
@@ -38,12 +43,11 @@ export const Search: FC = () => {
   }
 
   return (
-    <div className='relative mx-auto max-w-3xl'>
+    <div ref={ref} className='relative mx-auto max-w-3xl'>
       <input
         value={query}
         onChange={onQueryChange}
         onKeyDown={onKeyDown}
-        onBlur={() => setIsSuggestionsOpen(false)}
         onFocus={() => setIsSuggestionsOpen(true)}
         className='w-full border-b border-neutral-700 bg-transparent p-2 text-neutral-200 transition-colors duration-200 focus:border-neutral-500'
         placeholder='Type to search'
