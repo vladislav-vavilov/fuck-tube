@@ -1,11 +1,15 @@
 import { cn } from '@/utils'
 import { FC } from 'react'
-import { IoMdClose } from 'react-icons/io'
 import { SearchSuggestionsItem } from './SearchSuggestionsItem'
+
+type Suggestion = {
+  value: string
+  type: 'history' | 'query'
+}
 
 interface SearchSuggestionsProps {
   isOpen: boolean
-  items: string[]
+  items: Suggestion[]
   selectedItemIndex: number | null
   handleSearch: (searchQuery: string) => void
 }
@@ -25,12 +29,12 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
         }
       )}
     >
-      {items.map((suggestion, index) => (
+      {items.map(({ value, type }, index) => (
         <SearchSuggestionsItem
-          key={suggestion}
-          suggestion={suggestion}
+          key={value}
+          suggestion={`[${type}]: ${value}`}
           selected={index === selectedItemIndex}
-          onClick={() => handleSearch(suggestion)}
+          onClick={() => handleSearch(value)}
         />
       ))}
     </ul>

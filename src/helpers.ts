@@ -17,3 +17,10 @@ export const appendSearchHistory = (query: string) => {
   history.push(query)
   localStorage.setItem('history', JSON.stringify(history))
 }
+
+export const removeDuplicates = (
+  firstArray: unknown[],
+  secondArray: unknown[]
+) => {
+  return firstArray.filter((value) => !secondArray.includes(value))
+}

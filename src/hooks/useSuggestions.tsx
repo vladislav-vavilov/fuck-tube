@@ -1,24 +1,53 @@
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { useDebounce } from './useDebounce'
 import { API_URL } from '@/constants'
-import { getSearchHistory } from '@/helpers'
+import { getSearchHistory, removeDuplicates } from '@/helpers'
 
 export const useSuggestions = () => {
   const [query, setQuery] = useState('')
-  const [suggestions, setSuggestions] = useState(getSearchHistory)
+  const [historySuggestions, setHistorySuggestions] = useState(getSearchHistory)
+  const [querySuggestions, setQuerySuggestions] = useState<string[]>([])
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
 
-  const fetchSuggestions = useDebounce((query) => {
+  const suggestions = useMemo(() => {
+    return [
+      ...historySuggestions.map((value) => ({ value, type: 'history' })),
+      ...querySuggestions.map((value) => ({ value, type: 'query' }))
+    ]
+  }, [history, querySuggestions])
+
+  // Fetch query suggestions from API
+  const fetchQuerySuggestions = useDebounce((query) => {
     fetch(`${API_URL}/suggestions?query=${query}`)
       .then((res) => res.json())
-      .then(setSuggestions)
+      .then((data) => {
+        // Remove duplicates from query suggestions that contains history
+        return removeDuplicates(data, historySuggestions) as string[]
+      })
+      .then(setQuerySuggestions)
   }, 500)
+
+  // Filter history suggestions according to query
+  const filterHistorySuggestions = (query: string) => {
+    setHistorySuggestions((values) => {
+      return values.filter((value) => value.includes(query))
+    })
+  }
 
   const onQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
     const queryValue = e.target.value
+
     setQuery(queryValue)
     setSelectedSuggestionIndex(-1)
-    queryValue && fetchSuggestions(queryValue)
+
+    if (queryValue) {
+      fetchQuerySuggestions(queryValue)
+      filterHistorySuggestions(queryValue)
+    } else {
+      // Set back to default if query is empty
+      setQuerySuggestions([])
+      setHistorySuggestions(getSearchHistory)
+    }
   }
 
   const prevSuggestionIndex = useCallback(() => {
@@ -41,8 +70,10 @@ export const useSuggestions = () => {
 
       const newSuggestionIndex =
         direction === 'prev' ? prevSuggestionIndex() : nextSuggestionIndex()
+      const selectedSuggestionValue = suggestions[newSuggestionIndex].value
+
       setSelectedSuggestionIndex(newSuggestionIndex)
-      setQuery(suggestions[newSuggestionIndex])
+      setQuery(selectedSuggestionValue)
     },
     [suggestions, prevSuggestionIndex, nextSuggestionIndex]
   )
