@@ -3,7 +3,6 @@
 import { FC, KeyboardEvent, useState } from 'react'
 import { SearchSuggestions } from '@/components/Search/SearchSuggestions'
 import { useSuggestions } from '@/hooks/useSuggestions'
-import { appendSearchHistory } from '@/helpers'
 import { useClickAway } from '@/hooks/useClickAway'
 
 export const Search: FC = () => {
@@ -12,7 +11,13 @@ export const Search: FC = () => {
     query,
     suggestions,
     selectedSuggestionIndex,
-    func: { onQueryChange, prevSuggestion, nextSuggestion }
+    func: {
+      onQueryChange,
+      prevSuggestion,
+      nextSuggestion,
+      appendSearchHistory,
+      removeFromSearchHistory
+    }
   } = useSuggestions()
 
   const ref = useClickAway(() => {
@@ -58,6 +63,7 @@ export const Search: FC = () => {
           items={suggestions}
           selectedItemIndex={selectedSuggestionIndex}
           handleSearch={handleSearch}
+          removeFromSearchHistory={removeFromSearchHistory}
         />
       )}
     </div>

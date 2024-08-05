@@ -8,13 +8,15 @@ interface SearchSuggestionsProps {
   items: Suggestion[]
   selectedItemIndex: number | null
   handleSearch: (searchQuery: string) => void
+  removeFromSearchHistory: (value: string) => void
 }
 
 export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
   isOpen,
   items,
   selectedItemIndex,
-  handleSearch
+  handleSearch,
+  removeFromSearchHistory
 }) => {
   return (
     <ul
@@ -31,6 +33,7 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
           suggestion={suggestion}
           selected={index === selectedItemIndex}
           onClick={() => handleSearch(suggestion.value)}
+          remove={() => removeFromSearchHistory(suggestion.value)}
         />
       ))}
     </ul>

@@ -1,18 +1,20 @@
 import { Suggestion } from '@/types'
 import { cn } from '@/utils'
-import { FC, useEffect, useRef } from 'react'
+import { FC, MouseEvent, useEffect, useRef } from 'react'
 import { IoMdClose, IoMdSearch, IoMdTime } from 'react-icons/io'
 
 interface SearchSuggestionsItemProps {
   suggestion: Suggestion
   selected: boolean
   onClick: () => void
+  remove: () => void
 }
 
 export const SearchSuggestionsItem: FC<SearchSuggestionsItemProps> = ({
   suggestion: { type, value },
   selected,
-  onClick
+  onClick,
+  remove
 }) => {
   const ref = useRef<HTMLLIElement>(null)
 
@@ -21,6 +23,11 @@ export const SearchSuggestionsItem: FC<SearchSuggestionsItemProps> = ({
     if (!ref.current || !selected) return
     ref.current.scrollIntoView({ block: 'nearest' })
   }, [ref, selected])
+
+  const handleRemove = (e: MouseEvent) => {
+    e.stopPropagation()
+    remove()
+  }
 
   return (
     <li
@@ -40,7 +47,7 @@ export const SearchSuggestionsItem: FC<SearchSuggestionsItemProps> = ({
       </div>
       {type === 'history' && (
         <button
-          onClick={(e) => e.stopPropagation()}
+          onClick={handleRemove}
           className='invisible rounded-md p-1 opacity-0 transition-all duration-200 hover:bg-neutral-500/50 group-hover:visible group-hover:opacity-100'
         >
           <IoMdClose />
