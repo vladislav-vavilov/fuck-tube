@@ -98,6 +98,7 @@ export const useSuggestions = () => {
     selectedSuggestionIndex,
     func: {
       onQueryChange,
+      cleanQuery: () => setQuery(''),
       prevSuggestion,
       nextSuggestion,
       appendSearchHistory,

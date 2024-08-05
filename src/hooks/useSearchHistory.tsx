@@ -30,10 +30,10 @@ export const useSearchHistory = () => {
 
   const filter = (value: string) => {
     const filteredSearchHistory = searchHistory.filter((item) => {
-      item.includes(value)
+      return item.includes(value)
     })
-    setSearchHistory(filteredSearchHistory)
 
+    setSearchHistory(filteredSearchHistory)
     return filteredSearchHistory
   }
 
