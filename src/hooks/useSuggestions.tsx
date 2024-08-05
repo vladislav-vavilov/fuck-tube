@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useState } from 'react'
 import { useDebounce } from './useDebounce'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { API_URL } from '@/constants'
