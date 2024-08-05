@@ -12,7 +12,7 @@ export const Search: FC = () => {
     query,
     suggestions,
     selectedSuggestionIndex,
-    func: { onQueryChange, selectSuggestion }
+    func: { onQueryChange, prevSuggestion, nextSuggestion }
   } = useSuggestions()
 
   const ref = useClickAway(() => {
@@ -31,11 +31,11 @@ export const Search: FC = () => {
         break
       case 'ArrowUp':
         e.preventDefault()
-        selectSuggestion('prev')
+        prevSuggestion()
         break
       case 'ArrowDown':
         e.preventDefault()
-        selectSuggestion('next')
+        nextSuggestion()
         break
       default:
         break

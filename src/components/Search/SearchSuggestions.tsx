@@ -1,11 +1,7 @@
 import { cn } from '@/utils'
 import { FC } from 'react'
 import { SearchSuggestionsItem } from './SearchSuggestionsItem'
-
-type Suggestion = {
-  value: string
-  type: 'history' | 'query'
-}
+import { Suggestion } from '@/types'
 
 interface SearchSuggestionsProps {
   isOpen: boolean

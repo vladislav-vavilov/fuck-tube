@@ -2,6 +2,7 @@ import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { useDebounce } from './useDebounce'
 import { API_URL } from '@/constants'
 import { getSearchHistory, removeDuplicates } from '@/helpers'
+import { Suggestion } from '@/types'
 
 export const useSuggestions = () => {
   const [query, setQuery] = useState('')
@@ -9,10 +10,14 @@ export const useSuggestions = () => {
   const [querySuggestions, setQuerySuggestions] = useState<string[]>([])
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
 
-  const suggestions = useMemo(() => {
+  const suggestions: Suggestion[] = useMemo(() => {
     return [
-      ...historySuggestions.map((value) => ({ value, type: 'history' })),
-      ...querySuggestions.map((value) => ({ value, type: 'query' }))
+      ...historySuggestions.map((value) => {
+        return { value, type: 'history' } as Suggestion
+      }),
+      ...querySuggestions.map((value) => {
+        return { value, type: 'query' } as Suggestion
+      })
     ]
   }, [history, querySuggestions])
 
@@ -50,6 +55,14 @@ export const useSuggestions = () => {
     }
   }
 
+  const selectSuggestion = (suggestionIndex: number) => {
+    if (suggestions.length === 0) return
+
+    const selectedSuggestionValue = suggestions[suggestionIndex].value
+    setSelectedSuggestionIndex(suggestionIndex)
+    setQuery(selectedSuggestionValue) // Set query to suggestion value
+  }
+
   const prevSuggestionIndex = () => {
     if (selectedSuggestionIndex > 0) {
       return selectedSuggestionIndex - 1
@@ -64,24 +77,20 @@ export const useSuggestions = () => {
     return 0 // Loop around if at the end
   }
 
-  const selectSuggestion = useCallback(
-    (direction: 'prev' | 'next') => {
-      if (suggestions.length === 0) return
+  // Select previous suggestion
+  const prevSuggestion = useCallback(() => {
+    selectSuggestion(prevSuggestionIndex())
+  }, [selectSuggestion, prevSuggestionIndex])
 
-      const newSuggestionIndex =
-        direction === 'prev' ? prevSuggestionIndex() : nextSuggestionIndex()
-      const selectedSuggestionValue = suggestions[newSuggestionIndex].value
-
-      setSelectedSuggestionIndex(newSuggestionIndex)
-      setQuery(selectedSuggestionValue)
-    },
-    [suggestions, prevSuggestionIndex, nextSuggestionIndex]
-  )
+  // Select next suggestion
+  const nextSuggestion = useCallback(() => {
+    selectSuggestion(nextSuggestionIndex())
+  }, [selectSuggestion, prevSuggestionIndex])
 
   return {
     query,
     suggestions,
     selectedSuggestionIndex,
-    func: { onQueryChange, selectSuggestion }
+    func: { onQueryChange, prevSuggestion, nextSuggestion }
   }
 }
