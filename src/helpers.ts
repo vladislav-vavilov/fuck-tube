@@ -12,9 +12,9 @@ export const appendSearchHistory = (query: string) => {
   const history = getSearchHistory()
 
   if (history.includes(query)) return
-  if (history.length > 15) history.shift()
+  if (history.length > 15) history.pop()
 
-  history.push(query)
+  history.unshift(query)
   localStorage.setItem('history', JSON.stringify(history))
 }
 
