@@ -2,13 +2,17 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import { useDebounce } from './useDebounce'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { API_URL } from '@/constants'
+import { getSearchHistory } from '@/helpers'
 
 export const useSuggestions = () => {
   const [query, setQuery] = useState('')
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
 
+  const searchHistory = getSearchHistory()
+  const defaultSuggestions = searchHistory || []
+
   const queryClient = useQueryClient()
-  const { data: suggestions = [] } = useQuery({
+  const { data: suggestions = defaultSuggestions } = useQuery({
     queryKey: ['suggestions'],
     queryFn: () =>
       fetch(`${API_URL}/suggestions?query=${query}`).then((res) => res.json()),

@@ -3,6 +3,7 @@
 import { FC, KeyboardEvent, useState } from 'react'
 import { SearchSuggestions } from '@/components/Search/SearchSuggestions'
 import { useSuggestions } from '@/hooks/useSuggestions'
+import { appendSearchHistory } from '@/helpers'
 
 export const Search: FC = () => {
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(true)
@@ -15,6 +16,7 @@ export const Search: FC = () => {
 
   const handleSearch = (searchQuery: string = query) => {
     console.log(searchQuery)
+    appendSearchHistory(searchQuery)
   }
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -46,7 +48,7 @@ export const Search: FC = () => {
         className='w-full border-b border-neutral-700 bg-transparent p-2 text-neutral-200 transition-colors duration-200 focus:border-neutral-500'
         placeholder='Type to search'
       />
-      {suggestions.length > 0 && (
+      {!!suggestions.length && (
         <SearchSuggestions
           isOpen={isSuggestionsOpen}
           items={suggestions}
