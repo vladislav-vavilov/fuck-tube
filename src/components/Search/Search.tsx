@@ -14,7 +14,7 @@ export const Search: FC = () => {
   const [query, setQuery] = useState('')
   const { querySuggestions, fetchQuerySuggestions } = useQuerySuggestions()
   const {
-    searchHistory: historySuggestions,
+    suggestions: historySuggestions,
     functions: {
       append: appendSearchHistory,
       getSuggestions: getHistorySuggestions,

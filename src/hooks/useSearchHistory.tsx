@@ -1,6 +1,6 @@
 import { deduplicate } from '@/helpers'
 import { useLocalStorage } from './useLocalStorage'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useDebounce } from './useDebounce'
 
 export const useSearchHistory = () => {
@@ -8,31 +8,31 @@ export const useSearchHistory = () => {
     'history',
     []
   )
-  const [set, setStateOnly] = setSearchHistory
+  const [suggestions, setSuggestions] = useState(searchHistory)
 
   const append = useCallback(
     (value: string) => {
       if (searchHistory.includes(value)) return
-      set(deduplicate([value, ...searchHistory]))
+      setSearchHistory(deduplicate([value, ...searchHistory]))
     },
-    [searchHistory, set]
+    [searchHistory, setSearchHistory]
   )
 
   const remove = useCallback(
     (value: string) => {
-      set(searchHistory.filter((item) => item !== value))
+      setSearchHistory(searchHistory.filter((item) => item !== value))
     },
-    [searchHistory, set]
+    [searchHistory, setSearchHistory]
   )
 
   // Suggestions based on search history according to search query
   const getSuggestions = useDebounce((query: string) => {
-    if (!query) return setStateOnly(searchHistory) // Back to default
-    setStateOnly(searchHistory.filter((value) => value.includes(query)))
+    if (!query) return setSuggestions(searchHistory) // Back to default
+    setSuggestions(searchHistory.filter((value) => value.includes(query)))
   }, 200)
 
   return {
-    searchHistory,
+    suggestions: !!suggestions.length ? suggestions : searchHistory, // Prevent empty array
     functions: { append, remove, getSuggestions }
   }
 }
