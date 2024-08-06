@@ -59,7 +59,7 @@ export const Search: FC = () => {
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case 'Enter':
-        handleSearch(currentItem)
+        handleSearch()
         break
       case 'ArrowUp':
         e.preventDefault()

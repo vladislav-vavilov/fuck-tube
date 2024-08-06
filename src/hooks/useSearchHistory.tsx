@@ -28,7 +28,6 @@ export const useSearchHistory = () => {
   // Suggestions based on search history according to search query
   const getSuggestions = useDebounce((query: string) => {
     if (!query) return setStateOnly(searchHistory) // Back to default
-    console.log('search history')
     setStateOnly(searchHistory.filter((value) => value.includes(query)))
   }, 200)
 
