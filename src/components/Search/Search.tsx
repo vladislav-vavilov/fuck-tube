@@ -66,11 +66,11 @@ export const Search: FC = () => {
         break
       case 'ArrowUp':
         e.preventDefault()
-        prev()
+        setQuery(suggestions[prev()])
         break
       case 'ArrowDown':
         e.preventDefault()
-        next()
+        setQuery(suggestions[next()])
         break
       case 'Delete':
         if (currentItem) {

@@ -1,26 +1,27 @@
 import { useCallback, useState } from 'react'
 
 export const useSelect = <Value,>(items: Value[]) => {
-  const [currentIndex, setCurrentIndex] = useState<number>(-1)
+  const [currentIndex, setCurrentIndex] = useState(-1)
   const currentItem = currentIndex > -1 ? items[currentIndex] : undefined
-  console.log('select', items)
 
-  const prev = () => {
-    if (!items.length) return
+  const prev = useCallback(() => {
+    if (!items.length) return currentIndex
 
-    setCurrentIndex((currentIndex) => {
-      if (currentIndex > 0) return currentIndex - 1
-      return items.length - 1 // Loop around if at the start
-    })
-  }
+    let newIndex = items.length - 1 // Default. Loop around if at the start
+    if (currentIndex > 0) newIndex = currentIndex - 1
+
+    setCurrentIndex(newIndex)
+    return newIndex
+  }, [items, currentIndex])
 
   const next = () => {
-    if (!items.length) return
+    if (!items.length) return currentIndex
 
-    setCurrentIndex((currentIndex) => {
-      if (currentIndex < items.length - 1) return currentIndex + 1
-      return 0 // Loop around if at the end
-    })
+    let newIndex = 0 // Default. Loop around if at the end
+    if (currentIndex < items.length - 1) newIndex = currentIndex + 1
+
+    setCurrentIndex(newIndex)
+    return newIndex
   }
   const unselect = useCallback(() => setCurrentIndex(-1), [])
 
