@@ -3,7 +3,6 @@ import { FC, useMemo } from 'react'
 import { SearchSuggestionsItem } from './SearchSuggestionsItem'
 
 interface SearchSuggestionsProps {
-  isOpen: boolean
   suggestions: {
     history: string[] // Suggestions from search history
     query: string[] // Suggestion from API
@@ -14,7 +13,6 @@ interface SearchSuggestionsProps {
 }
 
 export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
-  isOpen,
   suggestions,
   selectedItemIndex,
   handleSearch,
@@ -30,14 +28,7 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
   }, [suggestions])
 
   return (
-    <ul
-      className={cn(
-        'absolute mt-2 max-h-[50vh] w-full overflow-y-scroll rounded-md bg-neutral-700 p-1 transition-all',
-        {
-          'invisible scale-95 opacity-0 ease-out': !isOpen
-        }
-      )}
-    >
+    <ul className='h-full w-full overflow-y-scroll rounded-md bg-neutral-700 p-1'>
       {suggestionsArray.map(({ value, type }, index) => (
         <SearchSuggestionsItem
           key={value}

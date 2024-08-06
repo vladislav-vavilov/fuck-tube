@@ -37,10 +37,6 @@ export const Search: FC = () => {
     functions: { prev, next, unselect }
   } = useSelect(suggestions)
 
-  const ref = useClickAway(() => {
-    setIsSuggestionsOpen(false)
-  })
-
   const handleSearch = (searchQuery: string = query) => {
     console.log(searchQuery)
     appendSearchHistory(searchQuery)
@@ -79,13 +75,14 @@ export const Search: FC = () => {
   }
 
   return (
-    <div ref={ref} className='relative mx-auto max-w-3xl'>
+    <div className='relative mx-auto max-w-3xl'>
       <div className='flex w-full items-center border-b border-neutral-700'>
         <input
           value={query}
           onChange={onQueryChange}
           onKeyDown={onKeyDown}
           onFocus={() => setIsSuggestionsOpen(true)}
+          onBlur={() => setIsSuggestionsOpen(false)}
           className='w-full bg-transparent p-2 text-neutral-200 transition-colors duration-200 focus:border-neutral-500'
           placeholder='Type to search'
         />
@@ -99,16 +96,23 @@ export const Search: FC = () => {
         </button>
       </div>
       {!!suggestions.length && (
-        <SearchSuggestions
-          isOpen={isSuggestionsOpen}
-          suggestions={{
-            history: historySuggestions,
-            query: deduplicatedQuerySuggestions
-          }}
-          selectedItemIndex={currentIndex}
-          handleSearch={handleSearch}
-          removeFromSearchHistory={removeFromSearchHistory}
-        />
+        <div
+          onMouseDown={(e) => e.preventDefault()}
+          className={cn(
+            'absolute mt-2 max-h-[50vh] w-full transition-all duration-200',
+            !isSuggestionsOpen && 'invisible scale-95 opacity-0 ease-out'
+          )}
+        >
+          <SearchSuggestions
+            suggestions={{
+              history: historySuggestions,
+              query: deduplicatedQuerySuggestions
+            }}
+            selectedItemIndex={currentIndex}
+            handleSearch={handleSearch}
+            removeFromSearchHistory={removeFromSearchHistory}
+          />
+        </div>
       )}
     </div>
   )
