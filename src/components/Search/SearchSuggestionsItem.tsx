@@ -1,18 +1,19 @@
-import { Suggestion } from '@/types'
 import { cn } from '@/utils'
 import { FC, MouseEvent, useEffect, useRef } from 'react'
 import { IoMdClose, IoMdSearch, IoMdTime } from 'react-icons/io'
 
 interface SearchSuggestionsItemProps {
-  suggestion: Suggestion
-  selected: boolean
+  type: 'query' | 'history'
+  suggestion: string
+  isSelected: boolean
   onClick: () => void
   remove: () => void
 }
 
 export const SearchSuggestionsItem: FC<SearchSuggestionsItemProps> = ({
-  suggestion: { type, value },
-  selected,
+  type,
+  suggestion,
+  isSelected,
   onClick,
   remove
 }) => {
@@ -20,9 +21,9 @@ export const SearchSuggestionsItem: FC<SearchSuggestionsItemProps> = ({
 
   // Scroll into view
   useEffect(() => {
-    if (!ref.current || !selected) return
+    if (!ref.current || !isSelected) return
     ref.current.scrollIntoView({ block: 'nearest' })
-  }, [ref, selected])
+  }, [ref, isSelected])
 
   const handleRemove = (e: MouseEvent) => {
     e.stopPropagation()
@@ -34,16 +35,16 @@ export const SearchSuggestionsItem: FC<SearchSuggestionsItemProps> = ({
       ref={ref}
       onClick={onClick}
       className={cn(
-        'group flex cursor-pointer items-center justify-between gap-4 rounded-md p-2 text-white transition-colors duration-200 hover:bg-neutral-600',
+        'group flex cursor-pointer select-none items-center justify-between gap-4 rounded-md p-2 text-white transition-colors duration-200 hover:bg-neutral-600',
         {
-          'bg-neutral-600': selected
+          'bg-neutral-600': isSelected
         }
       )}
     >
       <div className='flex items-center gap-2'>
         {type === 'history' && <IoMdTime size={20} />}
         {type === 'query' && <IoMdSearch size={20} />}
-        <span>{value}</span>
+        <span>{suggestion}</span>
       </div>
       {type === 'history' && (
         <button

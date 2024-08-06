@@ -1,11 +1,13 @@
 import { cn } from '@/utils'
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 import { SearchSuggestionsItem } from './SearchSuggestionsItem'
-import { Suggestion } from '@/types'
 
 interface SearchSuggestionsProps {
   isOpen: boolean
-  items: Suggestion[]
+  suggestions: {
+    history: string[] // Suggestions from search history
+    query: string[] // Suggestion from API
+  }
   selectedItemIndex: number | null
   handleSearch: (searchQuery: string) => void
   removeFromSearchHistory: (value: string) => void
@@ -13,11 +15,20 @@ interface SearchSuggestionsProps {
 
 export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
   isOpen,
-  items,
+  suggestions,
   selectedItemIndex,
   handleSearch,
   removeFromSearchHistory
 }) => {
+  const suggestionsArray = useMemo(() => {
+    return Object.keys(suggestions).flatMap((key) =>
+      suggestions[key as keyof typeof suggestions].map((value) => ({
+        value,
+        type: key
+      }))
+    )
+  }, [suggestions])
+
   return (
     <ul
       className={cn(
@@ -27,13 +38,14 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
         }
       )}
     >
-      {items.map((suggestion, index) => (
+      {suggestionsArray.map(({ value, type }, index) => (
         <SearchSuggestionsItem
-          key={suggestion.value}
-          suggestion={suggestion}
-          selected={index === selectedItemIndex}
-          onClick={() => handleSearch(suggestion.value)}
-          remove={() => removeFromSearchHistory(suggestion.value)}
+          key={value}
+          type={type}
+          suggestion={value}
+          isSelected={index === selectedItemIndex}
+          onClick={() => handleSearch(value)}
+          remove={() => removeFromSearchHistory(value)}
         />
       ))}
     </ul>

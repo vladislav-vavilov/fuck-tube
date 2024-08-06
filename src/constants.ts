@@ -1,1 +1,1 @@
-export const API_URL = 'https://pipedapi.ducks.party'
+export const API_URL = 'https://pipedapi.kavin.rocks'

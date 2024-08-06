@@ -1,46 +1,42 @@
-import { useState } from 'react'
+import { deduplicate, getSearchHistory } from '@/helpers'
+import { useLocalStorage } from './useLocalStorage'
+import { useCallback } from 'react'
 
-export const getSearchHistory = () => {
-  const localStorageHistory = localStorage.getItem('history')
-  const parsedLocalStorageHistory = JSON.parse(localStorageHistory ?? '[]')
-  const history: string[] = Array.isArray(parsedLocalStorageHistory)
-    ? parsedLocalStorageHistory
-    : []
-
-  return history
-}
-
-const saveToLocalStorage = (searchHistory: string[]) => {
-  localStorage.setItem('history', JSON.stringify(searchHistory))
-}
+const defaultValue = getSearchHistory()
 
 export const useSearchHistory = () => {
-  const [searchHistory, setSearchHistory] = useState(getSearchHistory)
+  const [searchHistory, setSearchHistory] = useLocalStorage<string[]>(
+    'history',
+    defaultValue
+  )
+  const [set, setStateOnly] = setSearchHistory
 
-  const append = (value: string) => {
-    setSearchHistory([value, ...searchHistory]) // Based on filtered search history
-    saveToLocalStorage([value, ...getSearchHistory()]) // Based on all search history
-  }
+  const append = useCallback(
+    (value: string) => {
+      if (searchHistory.includes(value)) return
+      set(deduplicate([value, ...searchHistory]))
+    },
+    [searchHistory, set]
+  )
 
-  const remove = (value: string) => {
-    const newSearchHistory = searchHistory.filter((item) => value !== item)
-    setSearchHistory(newSearchHistory)
-    saveToLocalStorage(newSearchHistory)
-  }
+  const remove = useCallback(
+    (value: string) => {
+      set(searchHistory.filter((item) => item !== value))
+    },
+    [searchHistory, set]
+  )
 
-  const filter = (value: string) => {
-    const filteredSearchHistory = searchHistory.filter((item) => {
-      return item.includes(value)
-    })
-
-    setSearchHistory(filteredSearchHistory)
-    return filteredSearchHistory
-  }
-
-  const resetFilter = () => setSearchHistory(getSearchHistory)
+  // Suggestions based on search history according to search query
+  const getSuggestions = useCallback(
+    (query: string) => {
+      if (!query) return setStateOnly(searchHistory) // Back to default
+      setStateOnly(searchHistory.filter((value) => value.includes(query)))
+    },
+    [searchHistory, setStateOnly]
+  )
 
   return {
     searchHistory,
-    func: { append, remove, filter, resetFilter }
+    functions: { append, remove, getSuggestions }
   }
 }

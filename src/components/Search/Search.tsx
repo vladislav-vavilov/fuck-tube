@@ -1,27 +1,44 @@
 'use client'
 
-import { FC, KeyboardEvent, useState } from 'react'
+import { ChangeEvent, FC, KeyboardEvent, useState } from 'react'
 import { SearchSuggestions } from '@/components/Search/SearchSuggestions'
-import { useSuggestions } from '@/hooks/useSuggestions'
 import { useClickAway } from '@/hooks/useClickAway'
 import { IoMdClose } from 'react-icons/io'
 import { cn } from '@/utils'
+import { useSelect } from '@/hooks/useSelect'
+import { useQuerySuggestions } from '@/hooks/useQuerySuggestions'
+import { useSearchHistory } from '@/hooks/useSearchHistory'
+import { deduplicateArrays } from '@/helpers'
 
 export const Search: FC = () => {
-  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const { querySuggestions, fetchQuerySuggestions } = useQuerySuggestions()
   const {
-    query,
-    suggestions,
-    selectedSuggestionIndex,
-    func: {
-      onQueryChange,
-      cleanQuery,
-      prevSuggestion,
-      nextSuggestion,
-      appendSearchHistory,
-      removeFromSearchHistory
+    searchHistory: historySuggestions,
+    functions: {
+      append: appendSearchHistory,
+      getSuggestions: getHistorySuggestions,
+      remove: removeFromSearchHistory
     }
-  } = useSuggestions()
+  } = useSearchHistory()
+
+  // Deduplicate query suggestions with search history
+  const deduplicatedQuerySuggestions = deduplicateArrays(
+    querySuggestions,
+    historySuggestions
+  )
+
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
+  const suggestions = [...historySuggestions, ...deduplicatedQuerySuggestions]
+
+  const {
+    currentIndex,
+    currentItem,
+    functions: { prev, next, unselect }
+  } = useSelect(suggestions)
+
+  console.log('search', suggestions)
+  console.log('INDEX: ', currentIndex)
 
   const ref = useClickAway(() => {
     setIsSuggestionsOpen(false)
@@ -32,18 +49,28 @@ export const Search: FC = () => {
     appendSearchHistory(searchQuery)
   }
 
+  const onQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+
+    setQuery(value)
+    unselect()
+
+    getHistorySuggestions(value)
+    fetchQuerySuggestions(value)
+  }
+
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case 'Enter':
-        handleSearch()
+        handleSearch(currentItem)
         break
       case 'ArrowUp':
         e.preventDefault()
-        prevSuggestion()
+        prev()
         break
       case 'ArrowDown':
         e.preventDefault()
-        nextSuggestion()
+        next()
         break
       default:
         break
@@ -62,7 +89,7 @@ export const Search: FC = () => {
           placeholder='Type to search'
         />
         <button
-          onClick={cleanQuery}
+          onClick={() => setQuery('')}
           className={cn('text-white transition-all duration-200', {
             'rotate-45 scale-95 opacity-0': !query
           })}
@@ -73,8 +100,11 @@ export const Search: FC = () => {
       {!!suggestions.length && (
         <SearchSuggestions
           isOpen={isSuggestionsOpen}
-          items={suggestions}
-          selectedItemIndex={selectedSuggestionIndex}
+          suggestions={{
+            history: historySuggestions,
+            query: deduplicatedQuerySuggestions
+          }}
+          selectedItemIndex={currentIndex}
           handleSearch={handleSearch}
           removeFromSearchHistory={removeFromSearchHistory}
         />
