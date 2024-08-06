@@ -37,9 +37,6 @@ export const Search: FC = () => {
     functions: { prev, next, unselect }
   } = useSelect(suggestions)
 
-  console.log('search', suggestions)
-  console.log('INDEX: ', currentIndex)
-
   const ref = useClickAway(() => {
     setIsSuggestionsOpen(false)
   })
