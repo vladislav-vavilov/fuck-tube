@@ -1,13 +1,12 @@
-import { deduplicate, getSearchHistory } from '@/helpers'
+import { deduplicate } from '@/helpers'
 import { useLocalStorage } from './useLocalStorage'
 import { useCallback } from 'react'
-
-const defaultValue = getSearchHistory()
+import { useDebounce } from './useDebounce'
 
 export const useSearchHistory = () => {
   const [searchHistory, setSearchHistory] = useLocalStorage<string[]>(
     'history',
-    defaultValue
+    []
   )
   const [set, setStateOnly] = setSearchHistory
 
@@ -27,13 +26,11 @@ export const useSearchHistory = () => {
   )
 
   // Suggestions based on search history according to search query
-  const getSuggestions = useCallback(
-    (query: string) => {
-      if (!query) return setStateOnly(searchHistory) // Back to default
-      setStateOnly(searchHistory.filter((value) => value.includes(query)))
-    },
-    [searchHistory, setStateOnly]
-  )
+  const getSuggestions = useDebounce((query: string) => {
+    if (!query) return setStateOnly(searchHistory) // Back to default
+    console.log('search history')
+    setStateOnly(searchHistory.filter((value) => value.includes(query)))
+  }, 200)
 
   return {
     searchHistory,

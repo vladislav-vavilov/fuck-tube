@@ -1,13 +1,3 @@
-export const getSearchHistory = () => {
-  const localStorageHistory = localStorage.getItem('history')
-  const parsedLocalStorageHistory = JSON.parse(localStorageHistory ?? '[]')
-  const history: string[] = Array.isArray(parsedLocalStorageHistory)
-    ? parsedLocalStorageHistory
-    : []
-
-  return history
-}
-
 export const deduplicateArrays = <Value extends unknown>(
   firstArray: Value[],
   secondArray: unknown[]

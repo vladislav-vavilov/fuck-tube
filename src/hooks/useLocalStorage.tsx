@@ -1,16 +1,14 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 type SetState<Value> = (value: Value | ((state: Value) => Value)) => void
 
 export const useLocalStorage = <Value,>(key: string, defaultValue: Value) => {
-  const [state, setState] = useState<Value>(() => {
-    try {
-      const item = localStorage.getItem(key)
-      return item ? JSON.parse(item) : defaultValue
-    } catch (error) {
-      return defaultValue
-    }
-  })
+  const [state, setState] = useState<Value>(defaultValue)
+
+  useEffect(() => {
+    const item = localStorage.getItem(key)
+    if (item) setState(JSON.parse(item))
+  }, [key])
 
   // Set state without localStorage
   const setStateOnly: SetState<Value> = useCallback((value) => {
