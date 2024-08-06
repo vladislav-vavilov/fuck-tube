@@ -72,6 +72,10 @@ export const Search: FC = () => {
         e.preventDefault()
         next()
         break
+      case 'Delete':
+        if (currentItem) {
+          removeFromSearchHistory(currentItem)
+        }
       default:
         break
     }
