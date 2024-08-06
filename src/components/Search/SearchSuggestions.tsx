@@ -22,13 +22,13 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
     return Object.keys(suggestions).flatMap((key) =>
       suggestions[key as keyof typeof suggestions].map((value) => ({
         value,
-        type: key
+        type: key as keyof typeof suggestions
       }))
     )
   }, [suggestions])
 
   return (
-    <ul className='h-full w-full overflow-y-scroll rounded-md bg-neutral-700 p-1'>
+    <ul className='h-full max-h-[50vh] w-full overflow-y-scroll rounded-md bg-neutral-700 p-1'>
       {suggestionsArray.map(({ value, type }, index) => (
         <SearchSuggestionsItem
           key={value}
