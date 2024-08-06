@@ -18,9 +18,9 @@ export const useSelect = <Value,>({
 
     setCurrentIndex(newIndex)
     onIndexChange?.(newIndex)
-  }, [items, currentIndex])
+  }, [items, currentIndex, onIndexChange])
 
-  const next = () => {
+  const next = useCallback(() => {
     if (!items.length) return currentIndex
 
     let newIndex = 0 // Default. Loop around if at the end
@@ -28,7 +28,8 @@ export const useSelect = <Value,>({
 
     setCurrentIndex(newIndex)
     onIndexChange?.(newIndex)
-  }
+  }, [items, currentIndex, onIndexChange])
+
   const unselect = useCallback(() => setCurrentIndex(-1), [])
 
   return {

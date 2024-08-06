@@ -28,6 +28,7 @@ export const Search: FC = () => {
 
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
   const suggestions = [...historySuggestions, ...deduplicatedQuerySuggestions]
+  console.log(suggestions)
 
   const {
     currentIndex,
@@ -35,14 +36,12 @@ export const Search: FC = () => {
     functions: { prev, next, unselect }
   } = useSelect({
     items: suggestions,
-    onIndexChange: (currentIndex) => {
-      unselect()
-      setQuery(suggestions[currentIndex])
-    }
+    onIndexChange: (currentIndex) => setQuery(suggestions[currentIndex])
   })
 
   const handleSearch = (searchQuery: string = query) => {
     console.log(searchQuery)
+    unselect()
     appendSearchHistory(searchQuery)
   }
 
@@ -71,6 +70,7 @@ export const Search: FC = () => {
         break
       case 'Delete':
         if (currentItem) {
+          unselect()
           removeFromSearchHistory(currentItem)
         }
       default:
@@ -103,7 +103,7 @@ export const Search: FC = () => {
         <div
           onMouseDown={(e) => e.preventDefault()}
           className={cn(
-            'absolute mt-2 max-h-[50vh] w-full transition-all duration-200',
+            'absolute mt-2 w-full transition-all duration-200',
             !isSuggestionsOpen && 'invisible scale-95 opacity-0 ease-out'
           )}
         >
