@@ -2,7 +2,6 @@
 
 import { ChangeEvent, FC, KeyboardEvent, useState } from 'react'
 import { SearchSuggestions } from '@/components/Search/SearchSuggestions'
-import { useClickAway } from '@/hooks/useClickAway'
 import { IoMdClose } from 'react-icons/io'
 import { cn } from '@/utils'
 import { useSelect } from '@/hooks/useSelect'
@@ -21,7 +20,6 @@ export const Search: FC = () => {
       remove: removeFromSearchHistory
     }
   } = useSearchHistory()
-
   // Deduplicate query suggestions with search history
   const deduplicatedQuerySuggestions = deduplicateArrays(
     querySuggestions,
@@ -35,7 +33,13 @@ export const Search: FC = () => {
     currentIndex,
     currentItem,
     functions: { prev, next, unselect }
-  } = useSelect(suggestions)
+  } = useSelect({
+    items: suggestions,
+    onIndexChange: (currentIndex) => {
+      unselect()
+      setQuery(suggestions[currentIndex])
+    }
+  })
 
   const handleSearch = (searchQuery: string = query) => {
     console.log(searchQuery)
@@ -59,11 +63,11 @@ export const Search: FC = () => {
         break
       case 'ArrowUp':
         e.preventDefault()
-        setQuery(suggestions[prev()])
+        prev()
         break
       case 'ArrowDown':
         e.preventDefault()
-        setQuery(suggestions[next()])
+        next()
         break
       case 'Delete':
         if (currentItem) {

@@ -1,6 +1,7 @@
 import { API_URL } from '@/constants'
 import { useDebounce } from './useDebounce'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export const useQuerySuggestions = () => {
   const [querySuggestions, setQuerySuggestions] = useState<string[]>([])
@@ -10,7 +11,14 @@ export const useQuerySuggestions = () => {
 
     fetch(`${API_URL}/suggestions?query=${query}`)
       .then((res) => res.json())
+      .then((data) => {
+        if (data?.error) throw new Error(data.error)
+        return data
+      })
       .then(setQuerySuggestions)
+      .catch((error) =>
+        toast.error('Something went wrong while fetching query suggestions')
+      )
   }, 500)
 
   return { querySuggestions, fetchQuerySuggestions }
