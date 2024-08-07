@@ -2,7 +2,7 @@ import { API_URL } from '@/constants'
 import { useDebounce } from './useDebounce'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { deduplicateArrays } from '@/helpers'
+import { remove } from '@/helpers'
 
 export const useQuerySuggestions = ({
   exclude = []
@@ -27,7 +27,7 @@ export const useQuerySuggestions = ({
   }, 500)
 
   return {
-    querySuggestions: deduplicateArrays(querySuggestions, exclude),
+    querySuggestions: remove({ from: querySuggestions, toRemove: exclude }),
     fetchQuerySuggestions
   }
 }

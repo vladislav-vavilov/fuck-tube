@@ -11,7 +11,7 @@ import { useSearchHistory } from '@/hooks/useSearchHistory'
 export const Search: FC = () => {
   const [query, setQuery] = useState('')
   const {
-    suggestions: historySuggestions,
+    historySuggestions,
     functions: { appendHistory, removeFromHistory, getHistorySuggestions }
   } = useSearchHistory()
   const { querySuggestions, fetchQuerySuggestions } = useQuerySuggestions({
