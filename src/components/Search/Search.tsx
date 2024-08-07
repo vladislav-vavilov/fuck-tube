@@ -101,7 +101,7 @@ export const Search: FC = () => {
         <div
           onMouseDown={(e) => e.preventDefault()}
           className={cn(
-            'absolute mt-2 w-full transition-all duration-200',
+            'absolute z-30 mt-2 w-full transition-all duration-200',
             !isSuggestionsOpen && 'invisible scale-95 opacity-0 ease-out'
           )}
         >

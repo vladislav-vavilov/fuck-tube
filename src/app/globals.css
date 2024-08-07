@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-neutral-800 text-white;
-}
-
 @layer base {
   input {
     @apply outline-none;
