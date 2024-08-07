@@ -2,8 +2,13 @@ import { API_URL } from '@/constants'
 import { useDebounce } from './useDebounce'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { deduplicateArrays } from '@/helpers'
 
-export const useQuerySuggestions = () => {
+export const useQuerySuggestions = ({
+  exclude = []
+}: {
+  exclude: string[]
+}) => {
   const [querySuggestions, setQuerySuggestions] = useState<string[]>([])
 
   const fetchQuerySuggestions = useDebounce((query: string) => {
@@ -16,10 +21,13 @@ export const useQuerySuggestions = () => {
         return data
       })
       .then(setQuerySuggestions)
-      .catch((error) =>
+      .catch(() =>
         toast.error('Something went wrong while fetching query suggestions')
       )
   }, 500)
 
-  return { querySuggestions, fetchQuerySuggestions }
+  return {
+    querySuggestions: deduplicateArrays(querySuggestions, exclude),
+    fetchQuerySuggestions
+  }
 }

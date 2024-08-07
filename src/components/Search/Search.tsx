@@ -7,28 +7,19 @@ import { cn } from '@/utils'
 import { useSelect } from '@/hooks/useSelect'
 import { useQuerySuggestions } from '@/hooks/useQuerySuggestions'
 import { useSearchHistory } from '@/hooks/useSearchHistory'
-import { deduplicateArrays } from '@/helpers'
 
 export const Search: FC = () => {
   const [query, setQuery] = useState('')
-  const { querySuggestions, fetchQuerySuggestions } = useQuerySuggestions()
   const {
     suggestions: historySuggestions,
-    functions: {
-      append: appendSearchHistory,
-      getSuggestions: getHistorySuggestions,
-      remove: removeFromSearchHistory
-    }
+    functions: { appendHistory, removeFromHistory, getHistorySuggestions }
   } = useSearchHistory()
-
-  // Deduplicate query suggestions with search history
-  const deduplicatedQuerySuggestions = deduplicateArrays(
-    querySuggestions,
-    historySuggestions
-  )
+  const { querySuggestions, fetchQuerySuggestions } = useQuerySuggestions({
+    exclude: historySuggestions
+  })
 
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
-  const suggestions = [...historySuggestions, ...deduplicatedQuerySuggestions]
+  const suggestions = [...historySuggestions, ...querySuggestions]
 
   const {
     currentIndex,
@@ -42,7 +33,7 @@ export const Search: FC = () => {
   const handleSearch = (searchQuery: string = query) => {
     console.log(searchQuery)
     unselect()
-    appendSearchHistory(searchQuery)
+    appendHistory(searchQuery)
   }
 
   const onQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +62,7 @@ export const Search: FC = () => {
       case 'Delete':
         if (currentItem) {
           unselect()
-          removeFromSearchHistory(currentItem)
+          removeFromHistory(currentItem)
         }
       default:
         break
@@ -110,11 +101,11 @@ export const Search: FC = () => {
           <SearchSuggestions
             suggestions={{
               history: historySuggestions,
-              query: deduplicatedQuerySuggestions
+              query: querySuggestions
             }}
             selectedItemIndex={currentIndex}
             handleSearch={handleSearch}
-            removeFromSearchHistory={removeFromSearchHistory}
+            removeFromHistory={removeFromHistory}
           />
         </div>
       )}

@@ -1,4 +1,3 @@
-import { cn } from '@/utils'
 import { FC, useMemo } from 'react'
 import { SearchSuggestionsItem } from './SearchSuggestionsItem'
 
@@ -9,14 +8,14 @@ interface SearchSuggestionsProps {
   }
   selectedItemIndex: number | null
   handleSearch: (searchQuery: string) => void
-  removeFromSearchHistory: (value: string) => void
+  removeFromHistory: (value: string) => void
 }
 
 export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
   suggestions,
   selectedItemIndex,
   handleSearch,
-  removeFromSearchHistory
+  removeFromHistory
 }) => {
   const suggestionsArray = useMemo(() => {
     return Object.keys(suggestions).flatMap((key) =>
@@ -36,7 +35,7 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
           suggestion={value}
           isSelected={index === selectedItemIndex}
           onClick={() => handleSearch(value)}
-          remove={() => removeFromSearchHistory(value)}
+          remove={() => removeFromHistory(value)}
         />
       ))}
     </ul>
