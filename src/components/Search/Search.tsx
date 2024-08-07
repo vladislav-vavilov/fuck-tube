@@ -20,6 +20,7 @@ export const Search: FC = () => {
       remove: removeFromSearchHistory
     }
   } = useSearchHistory()
+
   // Deduplicate query suggestions with search history
   const deduplicatedQuerySuggestions = deduplicateArrays(
     querySuggestions,
@@ -28,7 +29,6 @@ export const Search: FC = () => {
 
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
   const suggestions = [...historySuggestions, ...deduplicatedQuerySuggestions]
-  console.log(suggestions)
 
   const {
     currentIndex,
