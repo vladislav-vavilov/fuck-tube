@@ -1,11 +1,14 @@
 import { FC } from 'react'
 import { Logo } from '@/components/Logo'
 import { Search } from '@/components/Search/Search'
+import Link from 'next/link'
 
 export const Header: FC = () => {
   return (
     <header className='flex items-center px-8 py-4'>
-      <Logo />
+      <Link href='/'>
+        <Logo />
+      </Link>
       <div className='flex-auto'>
         <Search />
       </div>

@@ -7,6 +7,7 @@ import { cn } from '@/utils'
 import { useSelect } from '@/hooks/useSelect'
 import { useQuerySuggestions } from '@/hooks/useQuerySuggestions'
 import { useSearchHistory } from '@/hooks/useSearchHistory'
+import { useRouter } from 'next/navigation'
 
 export const Search: FC = () => {
   const [query, setQuery] = useState('')
@@ -30,10 +31,13 @@ export const Search: FC = () => {
     onIndexChange: (currentIndex) => setQuery(suggestions[currentIndex])
   })
 
+  const { push } = useRouter()
+
   const handleSearch = (searchQuery: string = query) => {
-    console.log(searchQuery)
+    push(`/results?search_query=${searchQuery}`)
     unselect()
     appendHistory(searchQuery)
+    setIsSuggestionsOpen(false)
   }
 
   const onQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +77,9 @@ export const Search: FC = () => {
     <div className='relative mx-auto max-w-3xl'>
       <div className='flex w-full items-center border-b border-neutral-700'>
         <input
+          ref={(element) => {
+            !isSuggestionsOpen && element?.blur()
+          }}
           value={query}
           onChange={onQueryChange}
           onKeyDown={onKeyDown}
