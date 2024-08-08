@@ -41,7 +41,7 @@ export const useSearchHistory = () => {
       if (history.includes(value)) return
 
       setHistorySuggestions((history) => [value, ...history])
-      set((history) => [...history, value])
+      set((history) => [value, ...history.slice(0, 15)]) // Keep only last 15 items
     },
     [history]
   )
