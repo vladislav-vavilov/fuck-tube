@@ -7,3 +7,14 @@
     @apply outline-none;
   }
 }
+
+
+@keyframes line {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}

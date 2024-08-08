@@ -1,5 +1,3 @@
-'use client'
-
 import { ChangeEvent, FC, KeyboardEvent, useState } from 'react'
 import { SearchSuggestions } from '@/components/Search/SearchSuggestions'
 import { IoMdClose } from 'react-icons/io'

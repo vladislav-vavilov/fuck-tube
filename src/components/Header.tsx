@@ -1,18 +1,27 @@
+'use client'
+
 import { FC } from 'react'
 import { Logo } from '@/components/Logo'
 import { Search } from '@/components/Search/Search'
 import Link from 'next/link'
+import { useIsFetching } from '@tanstack/react-query'
+import { FetchingIndicator } from './FetchingIndicator'
 
 export const Header: FC = () => {
+  const isFetching = useIsFetching()
+
   return (
-    <header className='sticky top-0 z-30 flex items-center justify-between bg-neutral-800/80 px-8 py-4 backdrop-blur-md'>
-      <Link href='/'>
-        <Logo />
-      </Link>
-      <div className='flex-auto'>
-        <Search />
-      </div>
-      <div className='h-10 w-10 rounded-full bg-gray-400' />
-    </header>
+    <>
+      {isFetching > 0 && <FetchingIndicator />}
+      <header className='sticky top-0 z-30 flex items-center justify-between bg-neutral-800/80 px-8 py-4 backdrop-blur-md'>
+        <Link href='/'>
+          <Logo />
+        </Link>
+        <div className='flex-auto'>
+          <Search />
+        </div>
+        <div className='h-10 w-10 rounded-full bg-gray-400' />
+      </header>
+    </>
   )
 }

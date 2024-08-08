@@ -23,17 +23,14 @@ export default function Results() {
   const query = searchParams.get('search_query')
   const filter = searchParams.get('filter') ?? 'all'
 
-  const { data, isFetching } = useQuery({
+  const { data } = useQuery({
     queryKey: [query, filter],
     queryFn: () => getData(query ?? '', filter as Filter)
   })
 
-  console.log(data)
-
   return (
     <div className='mx-auto flex max-w-4xl flex-col gap-4'>
       <SearchResultFilter />
-      {isFetching && <Spinner className='self-center' />}
       {data?.items.map((item) => {
         if (item.type === 'stream') {
           return <VideoCard key={item.url} {...item} />
