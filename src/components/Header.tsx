@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 export const Header: FC = () => {
   return (
-    <header className='flex items-center justify-between px-8 py-4'>
+    <header className='sticky top-0 z-30 flex items-center justify-between bg-neutral-800/80 px-8 py-4 backdrop-blur-md'>
       <Link href='/'>
         <Logo />
       </Link>
