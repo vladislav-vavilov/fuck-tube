@@ -8,6 +8,7 @@ import { useSelect } from '@/hooks/useSelect'
 import { useQuerySuggestions } from '@/hooks/useQuerySuggestions'
 import { useSearchHistory } from '@/hooks/useSearchHistory'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
 
 export const Search: FC = () => {
   const [query, setQuery] = useState('')
@@ -31,10 +32,12 @@ export const Search: FC = () => {
     onIndexChange: (currentIndex) => setQuery(suggestions[currentIndex])
   })
 
+  const queryClient = useQueryClient()
   const { push } = useRouter()
 
   const handleSearch = (searchQuery: string = query) => {
     push(`/results?search_query=${searchQuery}`)
+    queryClient.invalidateQueries({ queryKey: ['search'] })
     unselect()
     appendHistory(searchQuery)
     setIsSuggestionsOpen(false)
