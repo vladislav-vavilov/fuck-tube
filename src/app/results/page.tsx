@@ -28,6 +28,8 @@ export default function Results() {
     queryFn: () => getData(query ?? '', filter as Filter)
   })
 
+  console.log(data)
+
   return (
     <div className='mx-auto flex max-w-4xl flex-col gap-4'>
       <SearchResultFilter />

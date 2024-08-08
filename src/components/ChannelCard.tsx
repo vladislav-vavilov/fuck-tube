@@ -22,10 +22,16 @@ export const ChannelCard: FC<Channel> = (props) => {
               <span>{props.name}</span>
               {props.verified && <HiMiniCheckBadge />}
             </h3>
-            <span className='text-sm'>
-              {formatNumber(props.subscribers)} subscribers
-            </span>
-            <p className='pt-4 text-sm text-neutral-200'>{props.description}</p>
+            {props.subscribers > -1 && (
+              <span className='text-sm'>
+                {formatNumber(props.subscribers)} subscribers
+              </span>
+            )}
+            {props.description && (
+              <p className='pt-4 text-sm text-neutral-200'>
+                {props.description}
+              </p>
+            )}
           </div>
         </Link>
       </div>

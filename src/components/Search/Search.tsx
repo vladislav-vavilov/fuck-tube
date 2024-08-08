@@ -7,8 +7,7 @@ import { cn } from '@/utils'
 import { useSelect } from '@/hooks/useSelect'
 import { useQuerySuggestions } from '@/hooks/useQuerySuggestions'
 import { useSearchHistory } from '@/hooks/useSearchHistory'
-import { useRouter } from 'next/navigation'
-import { useQueryClient } from '@tanstack/react-query'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export const Search: FC = () => {
   const [query, setQuery] = useState('')
@@ -33,9 +32,11 @@ export const Search: FC = () => {
   })
 
   const { push } = useRouter()
+  const searchParams = useSearchParams()
+  const filter = searchParams.get('filter')
 
   const handleSearch = (searchQuery: string = query) => {
-    push(`/results?search_query=${searchQuery}?filter=all`)
+    push(`/results?search_query=${searchQuery}?filter=${filter ?? 'all'}`)
     unselect()
     appendHistory(searchQuery)
     setIsSuggestionsOpen(false)

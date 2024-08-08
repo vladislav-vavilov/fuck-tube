@@ -6,7 +6,7 @@ import { HiMiniCheckBadge } from 'react-icons/hi2'
 
 interface UploaderProps {
   name: string
-  url: string
+  url: string | null
   verified: boolean
   avatar?: string
   className?: string
@@ -21,7 +21,7 @@ export const Uploader: FC<UploaderProps> = ({
 }) => {
   return (
     <Link
-      href={url}
+      href={url ?? ''}
       className={cn(
         'group z-20 flex max-w-max items-center text-sm text-neutral-200',
         className

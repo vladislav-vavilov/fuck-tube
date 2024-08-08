@@ -10,8 +10,10 @@ export const VideoCard: FC<Video> = (props) => {
   return (
     <Card {...props} badge={duration}>
       <div className='flex text-sm text-neutral-200'>
-        <span>{formatNumber(props.views)} views ~&nbsp;</span>
-        <span>{props.uploadedDate}</span>
+        {props.views > -1 && (
+          <span>{formatNumber(props.views)} views ~&nbsp;</span>
+        )}
+        {props.uploadedDate && <span>{props.uploadedDate}</span>}
       </div>
       <Uploader
         name={props.uploaderName}
@@ -20,9 +22,11 @@ export const VideoCard: FC<Video> = (props) => {
         verified={props.uploaderVerified}
         className='my-4'
       />
-      <p className='line-clamp-2 text-sm text-neutral-200'>
-        {props.shortDescription}
-      </p>
+      {props.shortDescription && (
+        <p className='line-clamp-2 text-sm text-neutral-200'>
+          {props.shortDescription}
+        </p>
+      )}
     </Card>
   )
 }
