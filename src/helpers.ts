@@ -22,7 +22,7 @@ export const secondsToDDHHMMSS = (seconds: number) => {
           ${this.days > 0 ? this.days + 'd' : ''}
           ${this.hours > 0 ? this.hours + 'h' : ''} 
           ${this.minutes > 0 ? this.minutes + 'm' : ''}
-          ${this.seconds}s
+          ${this.seconds > 0 ? this.seconds + 's' : ''}
         `
     }
   }
