@@ -9,7 +9,7 @@ export const PlaylistCard: FC<Playlist> = (props) => {
       <Uploader
         name={props.uploaderName}
         url={props.uploaderUrl}
-        className='p-0'
+        verified={props.uploaderVerified}
       />
     </Card>
   )

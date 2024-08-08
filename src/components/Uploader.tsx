@@ -2,10 +2,12 @@ import { cn } from '@/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
+import { HiMiniCheckBadge } from 'react-icons/hi2'
 
 interface UploaderProps {
   name: string
   url: string
+  verified: boolean
   avatar?: string
   className?: string
 }
@@ -13,6 +15,7 @@ interface UploaderProps {
 export const Uploader: FC<UploaderProps> = ({
   name,
   url,
+  verified,
   avatar,
   className
 }) => {
@@ -20,7 +23,7 @@ export const Uploader: FC<UploaderProps> = ({
     <Link
       href={url}
       className={cn(
-        'group z-20 flex max-w-max items-center gap-2 py-4 text-sm text-neutral-200',
+        'group z-20 flex max-w-max items-center text-sm text-neutral-200',
         className
       )}
     >
@@ -34,13 +37,15 @@ export const Uploader: FC<UploaderProps> = ({
         />
       )}
       <span
-        className={cn(
-          'transition-colors duration-200 group-hover:text-white',
-          !avatar && 'underline'
-        )}
+        className={cn('transition-colors duration-200 group-hover:text-white', {
+          'pr-0.5': verified,
+          'pl-2': avatar,
+          underline: !avatar
+        })}
       >
         {name}
       </span>
+      {verified && <HiMiniCheckBadge size={18} />}
     </Link>
   )
 }

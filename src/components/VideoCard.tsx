@@ -17,6 +17,8 @@ export const VideoCard: FC<Video> = (props) => {
         name={props.uploaderName}
         url={props.uploaderUrl}
         avatar={props.uploaderAvatar}
+        verified={props.uploaderVerified}
+        className='my-4'
       />
       <p className='line-clamp-2 text-sm text-neutral-200'>
         {props.shortDescription}

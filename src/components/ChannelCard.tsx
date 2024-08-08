@@ -3,6 +3,7 @@ import { Channel } from '@/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
+import { HiMiniCheckBadge } from 'react-icons/hi2'
 
 export const ChannelCard: FC<Channel> = (props) => {
   return (
@@ -17,7 +18,10 @@ export const ChannelCard: FC<Channel> = (props) => {
             alt={props.name}
           />
           <div className='mt-4 flex flex-col'>
-            <h3 className='text-xl font-medium'>{props.name}</h3>
+            <h3 className='flex items-center gap-0.5 text-xl font-medium'>
+              <span>{props.name}</span>
+              {props.verified && <HiMiniCheckBadge />}
+            </h3>
             <span className='text-sm'>
               {formatNumber(props.subscribers)} subscribers
             </span>

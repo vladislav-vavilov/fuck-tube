@@ -30,6 +30,7 @@ export default function Results() {
     <div className='mx-auto flex max-w-4xl flex-col gap-4'>
       {isFetching && <Spinner className='self-center' />}
       {data?.items.map((item) => {
+        console.log(item)
         if (item.type === 'stream') {
           return <VideoCard key={item.url} {...item} />
         }

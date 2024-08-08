@@ -4,6 +4,7 @@ export interface Card {
   thumbnail: string
   uploaderName: string
   uploaderUrl: string
+  uploaderVerified: boolean
 }
 
 export interface Video extends Card {
