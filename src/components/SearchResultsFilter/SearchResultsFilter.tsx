@@ -6,7 +6,7 @@ export const SearchResultFilter: FC = () => {
   return (
     <div className='flex items-center justify-center gap-1'>
       {filters.map(({ label, value }) => (
-        <SearchResultsFilterItem label={label} value={value} />
+        <SearchResultsFilterItem key={value} label={label} value={value} />
       ))}
     </div>
   )

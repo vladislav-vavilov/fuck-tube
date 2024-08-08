@@ -13,15 +13,14 @@ export const SearchResultsFilterItem: FC<SearchResultFilterItem> = ({
   value
 }) => {
   const searchParams = useSearchParams()
-  const currentFilter = searchParams.get('currentFilter')
+  const currentFilter = searchParams.get('filter')
   const pathname = usePathname()
 
-  const params = new URLSearchParams()
+  const params = new URLSearchParams(searchParams.toString())
   params.set('filter', value)
 
   return (
     <Link
-      key={value}
       href={pathname + '?' + params.toString()}
       className={cn('whitespace-nowrap rounded-md p-2 leading-none', {
         'bg-neutral-100 text-black': value === currentFilter,
