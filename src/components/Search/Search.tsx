@@ -32,12 +32,10 @@ export const Search: FC = () => {
     onIndexChange: (currentIndex) => setQuery(suggestions[currentIndex])
   })
 
-  const queryClient = useQueryClient()
   const { push } = useRouter()
 
   const handleSearch = (searchQuery: string = query) => {
     push(`/results?search_query=${searchQuery}`)
-    queryClient.invalidateQueries({ queryKey: ['search'] })
     unselect()
     appendHistory(searchQuery)
     setIsSuggestionsOpen(false)

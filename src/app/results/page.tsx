@@ -5,29 +5,33 @@ import { Spinner } from '@/components/Spinner'
 import { VideoCard } from '@/components/VideoCard'
 import { ChannelCard } from '@/components/ChannelCard'
 import { API_URL } from '@/constants'
-import { Channel, Playlist, Video } from '@/types'
-import { useQuery } from '@tanstack/react-query'
+import { Channel, Filter, Playlist, Video } from '@/types'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
+import { SearchResultFilter } from '@/components/SearchResultsFilter'
+import { useState } from 'react'
+
 const getData = async (
-  query: string
+  query: string,
+  filter: Filter = 'all'
 ): Promise<{ items: (Video | Playlist | Channel)[]; nextpage: string }> => {
-  const res = await fetch(`${API_URL}/search?q=${query}&filter=all`)
+  const res = await fetch(`${API_URL}/search?q=${query}&filter=${filter}`)
   return await res.json()
 }
 
 export default function Results() {
   const searchParams = useSearchParams()
   const query = searchParams.get('search_query')
+  const [filter, setFilter] = useState<Filter>('all')
 
   const { data, isFetching } = useQuery({
-    queryKey: ['search'],
-    queryFn: () => getData(query ?? '')
+    queryKey: [query, filter],
+    queryFn: () => getData(query ?? '', filter)
   })
-
-  console.log(data)
 
   return (
     <div className='mx-auto flex max-w-4xl flex-col gap-4'>
+      <SearchResultFilter filter={filter} setFilter={setFilter} />
       {isFetching && <Spinner className='self-center' />}
       {data?.items.map((item) => {
         console.log(item)

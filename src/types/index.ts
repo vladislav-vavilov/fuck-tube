@@ -1,3 +1,5 @@
+import { filters } from '@/constants'
+
 export interface Card {
   type: 'stream' | 'playlist' | 'channel'
   url: string
@@ -33,3 +35,5 @@ export interface Channel extends Pick<Card, 'url' | 'thumbnail'> {
   description: string
   verified: boolean
 }
+
+export type Filter = (typeof filters)[number]['value']
