@@ -11,7 +11,7 @@ export const SearchResultFilter: FC = () => {
   const getUpdatedPath = useUpdateQueryParam()
 
   return (
-    <div className='flex items-center gap-1'>
+    <div className='flex items-center justify-center gap-1'>
       {filters.map(({ label, value }) => (
         <Link
           key={value}

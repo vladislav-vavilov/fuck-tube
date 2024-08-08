@@ -27,7 +27,7 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
   }, [suggestions])
 
   return (
-    <ul className='h-full max-h-[50vh] w-full overflow-y-scroll rounded-md bg-neutral-700 p-1'>
+    <ul className='h-full max-h-[50vh] w-full overflow-y-scroll rounded-md bg-neutral-700 p-1 shadow-md'>
       {suggestionsArray.map(({ value, type }, index) => (
         <SearchSuggestionsItem
           key={value}
