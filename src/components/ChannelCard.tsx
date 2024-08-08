@@ -12,8 +12,8 @@ export const ChannelCard: FC<Channel> = (props) => {
         <Link href={props.url} className='flex max-w-2xl gap-4'>
           <Image
             src={props.thumbnail}
-            width={164}
-            height={164}
+            width={128}
+            height={128}
             className='rounded-full'
             alt={props.name}
           />
