@@ -35,7 +35,7 @@ export const Search: FC = () => {
   const { push } = useRouter()
 
   const handleSearch = (searchQuery: string = query) => {
-    push(`/results?search_query=${searchQuery}`)
+    push(`/results?search_query=${searchQuery}?filter=all`)
     unselect()
     appendHistory(searchQuery)
     setIsSuggestionsOpen(false)

@@ -4,12 +4,11 @@ import { PlaylistCard } from '@/components/PlaylistCard'
 import { Spinner } from '@/components/Spinner'
 import { VideoCard } from '@/components/VideoCard'
 import { ChannelCard } from '@/components/ChannelCard'
-import { API_URL } from '@/constants'
+import { API_URL, filters } from '@/constants'
 import { Channel, Filter, Playlist, Video } from '@/types'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { SearchResultFilter } from '@/components/SearchResultsFilter'
-import { useState } from 'react'
 
 const getData = async (
   query: string,
@@ -22,19 +21,18 @@ const getData = async (
 export default function Results() {
   const searchParams = useSearchParams()
   const query = searchParams.get('search_query')
-  const [filter, setFilter] = useState<Filter>('all')
+  const filter = searchParams.get('filter') ?? 'all'
 
   const { data, isFetching } = useQuery({
     queryKey: [query, filter],
-    queryFn: () => getData(query ?? '', filter)
+    queryFn: () => getData(query ?? '', filter as Filter)
   })
 
   return (
     <div className='mx-auto flex max-w-4xl flex-col gap-4'>
-      <SearchResultFilter filter={filter} setFilter={setFilter} />
+      <SearchResultFilter />
       {isFetching && <Spinner className='self-center' />}
       {data?.items.map((item) => {
-        console.log(item)
         if (item.type === 'stream') {
           return <VideoCard key={item.url} {...item} />
         }
