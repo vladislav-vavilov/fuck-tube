@@ -1,14 +1,13 @@
 'use client'
 
 import { PlaylistCard } from '@/components/PlaylistCard'
-import { Spinner } from '@/components/Spinner'
 import { VideoCard } from '@/components/VideoCard'
 import { ChannelCard } from '@/components/ChannelCard'
-import { API_URL, filters } from '@/constants'
+import { API_URL } from '@/constants'
 import { Channel, Filter, Playlist, Video } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
-import { SearchResultFilter } from '@/components/SearchResultsFilter'
+import { SearchResultFilter } from '@/components/SearchResultsFilter/SearchResultsFilter'
 
 const getData = async (
   query: string,

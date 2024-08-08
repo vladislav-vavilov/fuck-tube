@@ -34,7 +34,11 @@ export const Search: FC = () => {
   const filter = searchParams.get('filter')
 
   const handleSearch = (searchQuery: string = query) => {
-    push(`/results?search_query=${searchQuery}?filter=${filter ?? 'all'}`)
+    const params = new URLSearchParams()
+    params.set('search_query', searchQuery)
+    params.set('filter', filter ?? 'all')
+
+    push(`/results?${params.toString()}`)
     unselect()
     appendHistory(searchQuery)
     setIsSuggestionsOpen(false)
