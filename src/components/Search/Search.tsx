@@ -1,11 +1,10 @@
-import { ChangeEvent, FC, KeyboardEvent, useState } from 'react'
+import { FC, KeyboardEvent, useState } from 'react'
 import { SearchSuggestions } from '@/components/Search/SearchSuggestions'
-import { IoMdClose } from 'react-icons/io'
-import { cn } from '@/utils'
 import { useSelect } from '@/hooks/useSelect'
 import { useQuerySuggestions } from '@/hooks/useQuerySuggestions'
 import { useSearchHistory } from '@/hooks/useSearchHistory'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { SearchClear } from './SearchClear'
 
 export const Search: FC = () => {
   const [query, setQuery] = useState('')
@@ -36,7 +35,7 @@ export const Search: FC = () => {
   const handleSearch = (searchQuery: string = query) => {
     const params = new URLSearchParams()
     params.set('search_query', searchQuery)
-    params.set('filter', filter ?? 'all')
+    params.set('filter', filter || 'all')
 
     push(`/results?${params.toString()}`)
     unselect()
@@ -53,15 +52,23 @@ export const Search: FC = () => {
   }
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    switch (e.key) {
+    const { key, ctrlKey } = e
+
+    switch (key) {
       case 'Enter':
         handleSearch()
         break
       case 'ArrowUp':
+      case 'k':
+        if (key === 'k' && !ctrlKey) return
+
         e.preventDefault()
         prev()
         break
       case 'ArrowDown':
+      case 'j':
+        if (key === 'j' && !ctrlKey) return
+
         e.preventDefault()
         next()
         break
@@ -90,35 +97,18 @@ export const Search: FC = () => {
           className='w-full bg-transparent p-2 text-neutral-200 transition-colors duration-200 focus:border-neutral-500'
           placeholder='Type to search'
         />
-        <button
-          onClick={() => changeQuery('')}
-          onMouseDown={(e) => e.preventDefault()} // Prevent input from losing focus
-          className={cn('text-white transition-all duration-200', {
-            'invisible rotate-45 scale-95 opacity-0': !query
-          })}
-        >
-          <IoMdClose size={20} />
-        </button>
+        <SearchClear show={!!query} onClick={() => setQuery('')} />
       </div>
-      {!!suggestions.length && (
-        <div
-          onMouseDown={(e) => e.preventDefault()} // Prevent input from losing focus
-          className={cn(
-            'absolute z-30 mt-2 w-full transition-all duration-200',
-            !isSuggestionsOpen && 'invisible scale-95 opacity-0 ease-out'
-          )}
-        >
-          <SearchSuggestions
-            suggestions={{
-              history: historySuggestions,
-              query: querySuggestions
-            }}
-            selectedItemIndex={currentIndex}
-            handleSearch={handleSearch}
-            removeFromHistory={removeFromHistory}
-          />
-        </div>
-      )}
+      <SearchSuggestions
+        isOpen={isSuggestionsOpen && !!suggestions.length}
+        suggestions={{
+          history: historySuggestions,
+          query: querySuggestions
+        }}
+        selectedItemIndex={currentIndex}
+        handleSearch={handleSearch}
+        removeFromHistory={removeFromHistory}
+      />
     </div>
   )
 }

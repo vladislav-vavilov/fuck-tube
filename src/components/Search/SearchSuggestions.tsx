@@ -1,7 +1,9 @@
 import { FC, useMemo } from 'react'
 import { SearchSuggestionsItem } from './SearchSuggestionsItem'
+import { cn } from '@/utils'
 
 interface SearchSuggestionsProps {
+  isOpen: boolean
   suggestions: {
     history: string[] // Suggestions from search history
     query: string[] // Suggestion from API
@@ -12,6 +14,7 @@ interface SearchSuggestionsProps {
 }
 
 export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
+  isOpen,
   suggestions,
   selectedItemIndex,
   handleSearch,
@@ -27,17 +30,25 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
   }, [suggestions])
 
   return (
-    <ul className='h-full max-h-[50vh] w-full overflow-y-scroll rounded-md bg-neutral-700 p-1 shadow-md'>
-      {suggestionsArray.map(({ value, type }, index) => (
-        <SearchSuggestionsItem
-          key={value}
-          type={type}
-          suggestion={value}
-          isSelected={index === selectedItemIndex}
-          onClick={() => handleSearch(value)}
-          remove={() => removeFromHistory(value)}
-        />
-      ))}
-    </ul>
+    <div
+      onMouseDown={(e) => e.preventDefault()} // Prevent input from losing focus
+      className={cn(
+        'absolute z-30 mt-2 w-full transition-all duration-200',
+        !isOpen && 'invisible scale-95 opacity-0 ease-out'
+      )}
+    >
+      <ul className='h-full max-h-[50vh] w-full overflow-y-scroll rounded-md bg-neutral-700 p-1 shadow-md'>
+        {suggestionsArray.map(({ value, type }, index) => (
+          <SearchSuggestionsItem
+            key={value}
+            type={type}
+            suggestion={value}
+            isSelected={index === selectedItemIndex}
+            onClick={() => handleSearch(value)}
+            remove={() => removeFromHistory(value)}
+          />
+        ))}
+      </ul>
+    </div>
   )
 }

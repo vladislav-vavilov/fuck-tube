@@ -20,11 +20,11 @@ const getData = async (
 export default function Results() {
   const searchParams = useSearchParams()
   const query = searchParams.get('search_query')
-  const filter = searchParams.get('filter') ?? 'all'
+  const filter = searchParams.get('filter') || 'all'
 
   const { data } = useQuery({
     queryKey: [query, filter],
-    queryFn: () => getData(query ?? '', filter as Filter)
+    queryFn: () => getData(query || '', filter as Filter)
   })
 
   return (
