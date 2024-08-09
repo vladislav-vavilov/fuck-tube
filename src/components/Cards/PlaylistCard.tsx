@@ -1,6 +1,6 @@
 import { Playlist } from '@/types'
 import { FC } from 'react'
-import { Card } from '@/components/Card'
+import { Card } from '@/components/Cards/Card'
 import { Uploader } from '@/components/Uploader'
 
 export const PlaylistCard: FC<Playlist> = (props) => {

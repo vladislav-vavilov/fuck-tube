@@ -1,6 +1,6 @@
 import { formatNumber, secondsToDDHHMMSS } from '@/helpers'
 import { FC } from 'react'
-import { Card } from '@/components/Card'
+import { Card } from '@/components/Cards/Card'
 import { Video } from '@/types'
 import { Uploader } from '@/components/Uploader'
 
