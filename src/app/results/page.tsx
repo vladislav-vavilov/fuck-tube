@@ -1,38 +1,18 @@
-'use client'
+import SearchResults from '@/components/SearchResults/SearchResults'
+import { Metadata } from 'next'
 
-import { API_URL } from '@/constants'
-import { Filter, SearchResult } from '@/types'
-import { useQuery } from '@tanstack/react-query'
-import { useSearchParams } from 'next/navigation'
-import { SearchResultFilter } from '@/components/SearchResults/SearchResultsFilter'
-import { SearchResultsEmpty } from '@/components/SearchResults/SearchResultsEmpty'
-import { SearchResultsItem } from '@/components/SearchResults/SearchResultsItem'
+type Props = {
+  searchParams: { [key: string]: string | undefined }
+}
 
-const getData = async (
-  query: string,
-  filter: Filter = 'all'
-): Promise<SearchResult> => {
-  const res = await fetch(`${API_URL}/search?q=${query}&filter=${filter}`)
-  return await res.json()
+export async function generateMetadata({
+  searchParams
+}: Props): Promise<Metadata> {
+  return {
+    title: searchParams.search_query ?? 'TuoYube - Results'
+  }
 }
 
 export default function Results() {
-  const searchParams = useSearchParams()
-  const query = searchParams.get('search_query')
-  const filter = searchParams.get('filter') || 'all'
-
-  const { data, isFetched } = useQuery({
-    queryKey: [query, filter],
-    queryFn: () => getData(query || '', filter as Filter)
-  })
-
-  return (
-    <div className='mx-auto flex h-full max-w-4xl flex-col items-center gap-4'>
-      <SearchResultFilter />
-      {isFetched && !data?.items.length && <SearchResultsEmpty />}
-      {data?.items.map((item) => (
-        <SearchResultsItem key={item.url} {...item} />
-      ))}
-    </div>
-  )
+  return <SearchResults />
 }
