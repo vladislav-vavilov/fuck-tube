@@ -46,12 +46,15 @@ export const useSearchHistory = () => {
     [history]
   )
 
-  const removeFromHistory = useCallback((value: string) => {
-    setHistorySuggestions((history) =>
-      remove({ from: history, toRemove: value })
-    ) // From suggestions
-    set((history) => remove({ from: history, toRemove: value })) // From entire history
-  }, [])
+  const removeFromHistory = useCallback(
+    (value: string) => {
+      setHistorySuggestions((history) =>
+        remove({ from: history, toRemove: value })
+      ) // From suggestions
+      set((history) => remove({ from: history, toRemove: value })) // From entire history
+    },
+    [set]
+  )
 
   // Suggestions based on search history according to search query
   const getHistorySuggestions = useCallback(
