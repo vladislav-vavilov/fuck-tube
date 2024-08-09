@@ -8,7 +8,7 @@ import { HiMiniCheckBadge } from 'react-icons/hi2'
 export const ChannelCard: FC<Channel> = (props) => {
   return (
     <>
-      <div className='rounded-md p-4 transition-colors duration-200 hover:bg-neutral-700/70'>
+      <div className='w-full rounded-md p-4 transition-colors duration-200 hover:bg-neutral-700/70'>
         <Link href={props.url} className='flex max-w-2xl gap-4'>
           <Image
             src={props.thumbnail}
