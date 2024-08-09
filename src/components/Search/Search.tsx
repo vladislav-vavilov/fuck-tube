@@ -1,13 +1,16 @@
-import { FC, KeyboardEvent, useState } from 'react'
+import { FC, KeyboardEvent, useRef, useState } from 'react'
 import { SearchSuggestions } from '@/components/Search/SearchSuggestions'
 import { useSelect } from '@/hooks/useSelect'
 import { useQuerySuggestions } from '@/hooks/useQuerySuggestions'
 import { useSearchHistory } from '@/hooks/useSearchHistory'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { SearchClear } from './SearchClear'
+import { InputHint } from '../InputHint'
+import { useKeyDown } from '@/hooks/useKeyDown'
 
 export const Search: FC = () => {
   const [query, setQuery] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
   const {
     historySuggestions,
     functions: { appendHistory, removeFromHistory, getHistorySuggestions }
@@ -18,6 +21,7 @@ export const Search: FC = () => {
 
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false)
   const suggestions = [...historySuggestions, ...querySuggestions]
+  const isOpen = isSuggestionsOpen && !!suggestions.length
 
   const {
     currentIndex,
@@ -41,6 +45,7 @@ export const Search: FC = () => {
     unselect()
     appendHistory(searchQuery)
     setIsSuggestionsOpen(false)
+    inputRef.current?.blur()
   }
 
   const changeQuery = (value: string) => {
@@ -50,6 +55,13 @@ export const Search: FC = () => {
     getHistorySuggestions(value)
     fetchQuerySuggestions(value)
   }
+
+  useKeyDown((e) => {
+    if (e.key === 'k' && e.ctrlKey) {
+      e.preventDefault()
+      inputRef.current?.focus()
+    }
+  })
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     const { key, ctrlKey } = e
@@ -61,19 +73,21 @@ export const Search: FC = () => {
       case 'ArrowUp':
       case 'k':
         if (key === 'k' && !ctrlKey) return
-
-        e.preventDefault()
-        prev()
+        if (isOpen) {
+          e.preventDefault()
+          prev()
+        }
         break
       case 'ArrowDown':
       case 'j':
         if (key === 'j' && !ctrlKey) return
-
-        e.preventDefault()
-        next()
+        if (isOpen) {
+          e.preventDefault()
+          next()
+        }
         break
       case 'Delete':
-        if (currentItem) {
+        if (currentItem && isOpen) {
           unselect()
           removeFromHistory(currentItem)
         }
@@ -84,11 +98,9 @@ export const Search: FC = () => {
 
   return (
     <div className='relative mx-auto max-w-3xl'>
-      <div className='flex w-full items-center border-b border-neutral-700'>
+      <div className='flex w-full items-center gap-2 border-b border-neutral-700'>
         <input
-          ref={(element) => {
-            !isSuggestionsOpen && element?.blur()
-          }}
+          ref={inputRef}
           value={query}
           onChange={(e) => changeQuery(e.target.value)}
           onKeyDown={onKeyDown}
@@ -97,10 +109,11 @@ export const Search: FC = () => {
           className='w-full bg-transparent p-2 text-neutral-200 transition-colors duration-200 focus:border-neutral-500'
           placeholder='Type to search'
         />
-        <SearchClear show={!!query} onClick={() => setQuery('')} />
+        <SearchClear show={!!query} onClick={() => changeQuery('')} />
+        <InputHint>{isOpen ? '↑↓ (Ctrl J/K)' : 'Ctrl K'}</InputHint>
       </div>
       <SearchSuggestions
-        isOpen={isSuggestionsOpen && !!suggestions.length}
+        isOpen={isOpen}
         suggestions={{
           history: historySuggestions,
           query: querySuggestions
