@@ -22,10 +22,13 @@ export const SearchResultsFilterItem: FC<SearchResultFilterItem> = ({
   return (
     <Link
       href={pathname + '?' + params.toString()}
-      className={cn('whitespace-nowrap rounded-md p-2 leading-none', {
-        'bg-neutral-100 text-black': value === currentFilter,
-        'bg-neutral-700': value !== currentFilter
-      })}
+      className={cn(
+        'whitespace-nowrap rounded-md p-2 leading-none transition-colors duration-200',
+        {
+          'bg-neutral-100 text-black': value === currentFilter,
+          'bg-neutral-700 hover:bg-neutral-600': value !== currentFilter
+        }
+      )}
     >
       {label}
     </Link>
