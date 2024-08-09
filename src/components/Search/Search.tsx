@@ -56,6 +56,8 @@ export const Search: FC = () => {
     fetchQuerySuggestions(value)
   }
 
+  const clear = () => changeQuery('')
+
   useKeyDown((e) => {
     if (e.key === 'k' && e.ctrlKey) {
       e.preventDefault()
@@ -70,24 +72,31 @@ export const Search: FC = () => {
       case 'Enter':
         handleSearch()
         break
+      case 'l':
+        if (ctrlKey) {
+          e.preventDefault()
+          clear()
+        }
+        break
+    }
+
+    if (!isOpen) return
+    // When suggestions are open
+    switch (key) {
       case 'ArrowUp':
       case 'k':
         if (key === 'k' && !ctrlKey) return
-        if (isOpen) {
-          e.preventDefault()
-          prev()
-        }
+        e.preventDefault()
+        prev()
         break
       case 'ArrowDown':
       case 'j':
         if (key === 'j' && !ctrlKey) return
-        if (isOpen) {
-          e.preventDefault()
-          next()
-        }
+        e.preventDefault()
+        next()
         break
       case 'Delete':
-        if (currentItem && isOpen) {
+        if (currentItem) {
           unselect()
           removeFromHistory(currentItem)
         }
@@ -109,7 +118,7 @@ export const Search: FC = () => {
           className='w-full bg-transparent p-2 text-neutral-200 transition-colors duration-200 focus:border-neutral-500'
           placeholder='Type to search'
         />
-        <SearchClear show={!!query} onClick={() => changeQuery('')} />
+        <SearchClear show={!!query} onClick={clear} />
         <InputHint>{isOpen ? '↑↓ (Ctrl J/K)' : 'Ctrl K'}</InputHint>
       </div>
       <SearchSuggestions
