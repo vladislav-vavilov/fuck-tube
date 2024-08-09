@@ -15,21 +15,21 @@ export const SearchInput: FC = () => {
   } = useContext(SearchContext) as SearchContextValue
 
   useKeyDown((e) => {
-    if (e.key === 'k' && e.ctrlKey) {
+    if (e.code === 'KeyK' && e.ctrlKey) {
       e.preventDefault()
       inputRef.current?.focus()
     }
   })
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    const { key, ctrlKey } = e
+    const { ctrlKey, code } = e
 
-    switch (key) {
+    switch (code) {
       case 'Enter':
         handleSearch()
         inputRef.current?.blur()
         break
-      case 'l':
+      case 'KeyL':
         if (ctrlKey) {
           e.preventDefault()
           clear()
@@ -39,16 +39,16 @@ export const SearchInput: FC = () => {
 
     if (!isOpen) return
     // When suggestions are open
-    switch (key) {
+    switch (code) {
       case 'ArrowUp':
-      case 'k':
-        if (key === 'k' && !ctrlKey) return
+      case 'KeyK':
+        if (code === 'KeyK' && !ctrlKey) return
         e.preventDefault()
         prev()
         break
       case 'ArrowDown':
-      case 'j':
-        if (key === 'j' && !ctrlKey) return
+      case 'KeyJ':
+        if (code === 'KeyJ' && !ctrlKey) return
         e.preventDefault()
         next()
         break
