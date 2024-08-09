@@ -44,9 +44,7 @@ export const Search: FC = () => {
     setIsSuggestionsOpen(false)
   }
 
-  const onQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-
+  const changeQuery = (value: string) => {
     setQuery(value)
     unselect()
 
@@ -85,7 +83,7 @@ export const Search: FC = () => {
             !isSuggestionsOpen && element?.blur()
           }}
           value={query}
-          onChange={onQueryChange}
+          onChange={(e) => changeQuery(e.target.value)}
           onKeyDown={onKeyDown}
           onFocus={() => setIsSuggestionsOpen(true)}
           onBlur={() => setIsSuggestionsOpen(false)}
@@ -93,9 +91,10 @@ export const Search: FC = () => {
           placeholder='Type to search'
         />
         <button
-          onClick={() => setQuery('')}
+          onClick={() => changeQuery('')}
+          onMouseDown={(e) => e.preventDefault()} // Prevent input from losing focus
           className={cn('text-white transition-all duration-200', {
-            'rotate-45 scale-95 opacity-0': !query
+            'invisible rotate-45 scale-95 opacity-0': !query
           })}
         >
           <IoMdClose size={20} />
@@ -103,7 +102,7 @@ export const Search: FC = () => {
       </div>
       {!!suggestions.length && (
         <div
-          onMouseDown={(e) => e.preventDefault()}
+          onMouseDown={(e) => e.preventDefault()} // Prevent input from losing focus
           className={cn(
             'absolute z-30 mt-2 w-full transition-all duration-200',
             !isSuggestionsOpen && 'invisible scale-95 opacity-0 ease-out'
