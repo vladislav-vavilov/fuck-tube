@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 import { Header } from '@/components/Header'
+import { Toaster } from 'sonner'
 
-const inter = Inter({ subsets: ['latin'] })
+const montserrat = Montserrat({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,12 +21,14 @@ export default function RootLayout({
     <html lang='en' className='min-h-full'>
       <body
         className={
-          (inter.className, 'flex h-full flex-col bg-neutral-800 text-white')
+          (montserrat.className,
+          'flex h-full flex-col bg-neutral-800 text-white')
         }
       >
         <Providers>
           <Header />
           {children}
+          <Toaster theme='dark' richColors closeButton />
         </Providers>
       </body>
     </html>

@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { useIsFetching } from '@tanstack/react-query'
 import { FetchingIndicator } from './FetchingIndicator'
 import { SearchContextProvider } from '@/contexts/SearchContext'
+import { toast } from 'sonner'
 
 export const Header: FC = () => {
   const isFetching = useIsFetching()
