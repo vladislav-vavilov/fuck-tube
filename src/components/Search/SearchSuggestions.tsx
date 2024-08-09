@@ -1,33 +1,33 @@
-import { FC, useMemo } from 'react'
+import { FC, useContext, useMemo } from 'react'
 import { SearchSuggestionsItem } from './SearchSuggestionsItem'
 import { cn } from '@/utils'
+import { SearchContext } from '@/contexts/SearchContext'
+import { SearchContextValue } from '@/types/contexts'
 
-interface SearchSuggestionsProps {
-  isOpen: boolean
-  suggestions: {
-    history: string[] // Suggestions from search history
-    query: string[] // Suggestion from API
-  }
-  selectedItemIndex: number | null
-  handleSearch: (searchQuery: string) => void
-  removeFromHistory: (value: string) => void
-}
+type Suggestion = { value: string; type: 'history' | 'query' }
 
-export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
-  isOpen,
-  suggestions,
-  selectedItemIndex,
-  handleSearch,
-  removeFromHistory
-}) => {
+export const SearchSuggestions: FC = () => {
+  const {
+    suggestions: { isOpen, values },
+    input: { handleSearch },
+    select: { currentIndex },
+    history: { removeFromHistory }
+  } = useContext(SearchContext) as SearchContextValue
+
   const suggestionsArray = useMemo(() => {
-    return Object.keys(suggestions).flatMap((key) =>
-      suggestions[key as keyof typeof suggestions].map((value) => ({
-        value,
-        type: key as keyof typeof suggestions
-      }))
-    )
-  }, [suggestions])
+    const result: Suggestion[] = []
+
+    for (const key in values) {
+      values[key as keyof typeof values].forEach((value) => {
+        result.push({
+          value,
+          type: key as keyof typeof values
+        })
+      })
+    }
+
+    return result
+  }, [values])
 
   return (
     <div
@@ -43,7 +43,7 @@ export const SearchSuggestions: FC<SearchSuggestionsProps> = ({
             key={value}
             type={type}
             suggestion={value}
-            isSelected={index === selectedItemIndex}
+            isSelected={index === currentIndex}
             onClick={() => handleSearch(value)}
             remove={() => removeFromHistory(value)}
           />

@@ -6,6 +6,7 @@ import { Search } from '@/components/Search/Search'
 import Link from 'next/link'
 import { useIsFetching } from '@tanstack/react-query'
 import { FetchingIndicator } from './FetchingIndicator'
+import { SearchContextProvider } from '@/contexts/SearchContext'
 
 export const Header: FC = () => {
   const isFetching = useIsFetching()
@@ -20,7 +21,9 @@ export const Header: FC = () => {
           </Link>
         </div>
         <div className='basis-1/2'>
-          <Search />
+          <SearchContextProvider>
+            <Search />
+          </SearchContextProvider>
         </div>
         <div className='flex basis-1/4 justify-end'>
           <div className='h-10 w-10 rounded-full bg-gray-400' />
