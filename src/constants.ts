@@ -1,4 +1,4 @@
-export const API_URL = 'https://pipedapi.ducks.party'
+export const API_URL = 'https://pipedapi.us.projectsegfau.lt'
 
 export const filters = [
   { label: 'All', value: 'all' },

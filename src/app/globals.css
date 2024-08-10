@@ -8,6 +8,12 @@
   }
 }
 
+@layer components {
+  .skeleton {
+    @apply bg-neutral-700/70 animate-pulse rounded-md;
+  }
+}
+
 
 @keyframes line {
   from {
