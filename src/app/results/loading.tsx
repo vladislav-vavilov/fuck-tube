@@ -1,11 +1,5 @@
-import { CardSkeleton } from '@/components/Cards/CardSkeleton'
+import { SearchResultsLoading } from '@/components/SearchResults/SearchResultsLoading'
 
 export default function Loading() {
-  return (
-    <div className='flex w-full flex-col gap-4'>
-      {Array.from({ length: 4 }).map((_, index) => (
-        <CardSkeleton key={index} />
-      ))}
-    </div>
-  )
+  return <SearchResultsLoading />
 }

@@ -1,25 +1,21 @@
 import { PlaylistInfo } from '@/components/PlaylistInfo/PlaylistInfo'
-import { API_URL } from '@/constants'
+import { getPlaylistInfo } from '@/services/api'
 
 interface PlaylistProps {
   searchParams: { [key: string]: string | undefined }
 }
 
-const getData = async (playlistId: string) => {
-  if (!playlistId) return null
-
+export async function generateMetadata({ searchParams }: PlaylistProps) {
   try {
-    const res = await fetch(`${API_URL}/playlists/${playlistId}`)
-    return await res.json()
+    const data = await getPlaylistInfo(searchParams.list ?? '')
+
+    if (data) return { title: data.name }
+    return { title: 'Playlist' }
   } catch {
-    return null
+    return { title: 'Playlist' }
   }
 }
 
-export default async function Playlist({ searchParams }: PlaylistProps) {
-  const { list } = searchParams
-  const data = await getData(list ?? '')
-  console.log(data)
-
+export default async function Playlist() {
   return <PlaylistInfo />
 }

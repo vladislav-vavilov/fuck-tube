@@ -41,3 +41,16 @@ export interface SearchResult {
 }
 
 export type Filter = (typeof filters)[number]['value']
+
+export interface PlaylistInfo {
+  name: string
+  thumbnailUrl: string
+  description: string
+  bannerUrl: null
+  nextpage: string | null
+  uploader: string
+  uploaderUrl: string
+  uploaderAvatar: string
+  videos: number
+  relatedStreams: Video[]
+}

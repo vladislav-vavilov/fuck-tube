@@ -5,9 +5,10 @@ import { SearchResultsItem } from './SearchResultsItem'
 import { SearchResultsEmpty } from './SearchResultsEmpty'
 import { useSearchParams } from 'next/navigation'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { Filter, SearchResult } from '@/types'
-import { API_URL } from '@/constants'
+import { Filter } from '@/types'
 import { useReachEnd } from '@/hooks/useReachEnd'
+import { getSearchResults } from '@/services/api'
+import { SearchResultsLoading } from './SearchResultsLoading'
 
 export const SearchResultsItems: FC = () => {
   const searchParams = useSearchParams()
@@ -17,13 +18,8 @@ export const SearchResultsItems: FC = () => {
   const { data, isFetching, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: [query, filter],
-      queryFn: async ({ pageParam }) => {
-        const URL = pageParam
-          ? `${API_URL}/nextpage/search?nextpage=${pageParam}&q=${query}&filter=${filter}`
-          : `${API_URL}/search?q=${query}&filter=${filter}`
-
-        const res = await fetch(URL)
-        return await res.json()
+      queryFn: ({ pageParam }: { pageParam: string | null }) => {
+        return getSearchResults(pageParam, query, filter)
       },
       initialPageParam: null,
       getNextPageParam: (lastPage) => lastPage?.nextpage
@@ -33,14 +29,16 @@ export const SearchResultsItems: FC = () => {
     if (!isFetchingNextPage) fetchNextPage()
   })
 
+  if (isFetching) return <SearchResultsLoading />
+
   const pages = data?.pages ?? []
   if (!pages.length && !isFetching) return <SearchResultsEmpty />
 
   return (
     <div ref={ref} className='flex flex-col gap-4'>
-      {pages.map((data: SearchResult, index) => (
+      {pages.map((data, index) => (
         <Fragment key={index}>
-          {data?.items?.map((item) => (
+          {data?.items.map((item) => (
             <SearchResultsItem key={item.url} {...item} />
           ))}
         </Fragment>

@@ -1,14 +1,31 @@
 import { API_URL } from '@/constants'
-import { Filter, SearchResult } from '@/types'
+import { Filter, PlaylistInfo, SearchResult } from '@/types'
 
-export const getSearchResults = async (
-  query: string = '',
-  filter: Filter = 'all'
-): Promise<SearchResult | null> => {
-  try {
-    const res = await fetch(`${API_URL}/search?q=${query}&filter=${filter}`)
-    return await res.json()
-  } catch (error) {
-    return null
-  }
+type GetSearchResults = (
+  pageParam: string | null,
+  query: string,
+  filter: Filter
+) => Promise<SearchResult | null>
+
+export const getSearchResults: GetSearchResults = async (
+  pageParam,
+  query,
+  filter
+) => {
+  const URL = pageParam
+    ? `${API_URL}/nextpage/search?nextpage=${pageParam}&q=${query}&filter=${filter}`
+    : `${API_URL}/search?q=${query}&filter=${filter}`
+
+  const res = await fetch(URL)
+  return await res.json()
+}
+
+export const getPlaylistInfo = async (
+  playlistId: string
+): Promise<PlaylistInfo> => {
+  const res = await fetch(`${API_URL}/playlists/${playlistId}`)
+  const data = await res.json()
+
+  if (data.hasOwnProperty('error')) throw new Error(data.error)
+  return await res.json()
 }
