@@ -5,7 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'pipedproxy.us.projectsegfau.lt',
+        hostname: 'piped-proxy.ducks.party',
         pathname: '/**'
       }
     ]
