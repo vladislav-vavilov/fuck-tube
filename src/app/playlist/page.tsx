@@ -10,9 +10,9 @@ export async function generateMetadata({ searchParams }: PlaylistProps) {
     const data = await getPlaylistInfo(searchParams.list ?? '')
 
     if (data) return { title: data.name }
-    return { title: 'Playlist' }
+    return { title: 'Playlist - TouYoube' }
   } catch {
-    return { title: 'Playlist' }
+    return { title: 'Playlist - TouYoube' }
   }
 }
 

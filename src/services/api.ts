@@ -27,5 +27,5 @@ export const getPlaylistInfo = async (
   const data = await res.json()
 
   if (data.hasOwnProperty('error')) throw new Error(data.error)
-  return await res.json()
+  return data
 }
