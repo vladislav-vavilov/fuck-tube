@@ -53,14 +53,16 @@ export const PlaylistInfo: FC = () => {
               className='rounded-md'
               alt={firstPage.name}
             />
-            <h3 className='text-2xl font-medium'>{firstPage.name}</h3>
+            <h3 className='line-clamp-2 text-2xl font-medium'>
+              {firstPage.name}
+            </h3>
             <Uploader
               name={firstPage.uploader}
               url={firstPage.uploaderUrl}
               avatar={firstPage.uploaderAvatar}
             />
-            <span>{firstPage.videos} videos</span>
-            <p className='overflow-hidden text-ellipsis'>
+            <span className='text-sm'>{firstPage.videos} videos</span>
+            <p className='overflow-hidden text-ellipsis text-sm'>
               {firstPage.description}
             </p>
           </div>
