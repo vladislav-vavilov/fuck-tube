@@ -37,7 +37,7 @@ export const SearchSuggestions: FC = () => {
         !isOpen && 'invisible scale-95 opacity-0 ease-out'
       )}
     >
-      <ul className='h-full max-h-[50vh] w-full overflow-y-scroll rounded-md bg-neutral-700 p-1 shadow-md'>
+      <ul className='h-full max-h-[50vh] w-full overflow-y-auto rounded-md bg-neutral-700 p-1 shadow-md'>
         {suggestionsArray.map(({ value, type }, index) => (
           <SearchSuggestionsItem
             key={value}

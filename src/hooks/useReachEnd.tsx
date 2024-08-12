@@ -1,23 +1,15 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
-export const useReachEnd = <Element extends HTMLElement>(
-  callback: () => void
-) => {
-  const ref = useRef<Element>(null)
-
+export const useReachEnd = (callback: () => void) => {
   useEffect(() => {
     const handleScroll = () => {
-      if (!ref.current) return
-
-      const windowScroll = window.scrollY + window.innerHeight
-      const elementScroll = ref.current.scrollHeight
-
-      if (windowScroll > elementScroll) callback()
+      if (window.scrollY + window.innerHeight >= document.body.clientHeight) {
+        console.log('reached')
+        callback()
+      }
     }
 
     document.addEventListener('scroll', handleScroll)
     return () => document.removeEventListener('scroll', handleScroll)
-  }, [ref.current])
-
-  return ref
+  }, [callback])
 }
