@@ -1,5 +1,5 @@
 import { formatNumber } from '@/helpers'
-import { Channel } from '@/types'
+import { ChannelCard as Channel } from '@/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'

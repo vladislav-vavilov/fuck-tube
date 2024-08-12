@@ -7,9 +7,9 @@ import { FC } from 'react'
 import { useReachEnd } from '@/hooks/useReachEnd'
 import { PlaylistError } from './PlaylistError'
 import { PlaylistEmpty } from './PlaylistEmpty'
-import { PlaylistLoading } from './PlaylistLoading'
 import { PlaylistInfo } from './PlaylistInfo'
 import { PlaylistVideos } from './PlaylistVideos'
+import { PlaylistLoading } from './PlaylistLoading'
 
 export const Playlist: FC = () => {
   const searchParams = useSearchParams()

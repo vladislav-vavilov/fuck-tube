@@ -1,4 +1,5 @@
 import { Card as CardType } from '@/types'
+import { cn } from '@/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC, ReactNode } from 'react'
@@ -7,6 +8,7 @@ interface CardProps extends CardType {
   children: ReactNode
   title: string
   badge?: string
+  className?: string
 }
 
 export const Card: FC<CardProps> = ({
@@ -14,10 +16,16 @@ export const Card: FC<CardProps> = ({
   title,
   url,
   thumbnail,
-  badge
+  badge,
+  className
 }) => {
   return (
-    <div className='relative flex w-full items-stretch gap-4 rounded-md transition-colors duration-200 active:bg-neutral-700/70'>
+    <div
+      className={cn(
+        'relative flex w-full items-stretch gap-4 rounded-md transition-colors duration-200 active:bg-neutral-700/70',
+        className
+      )}
+    >
       {/* Avoid nested links*/}
       <Link href={url} className='absolute inset-0 z-10' />
       <div className='relative basis-2/5'>

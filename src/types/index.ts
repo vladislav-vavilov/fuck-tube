@@ -3,20 +3,19 @@ import { filters } from '@/constants'
 export interface Card {
   url: string
   thumbnail: string
-  uploaderName: string
-  uploaderUrl: string
-  uploaderVerified: boolean
+  uploaderName?: string
+  uploaderUrl?: string
+  uploaderVerified?: boolean
 }
 
 export interface VideoCard extends Card {
   type: 'stream'
   title: string
-  uploaderAvatar: string
+  uploaderAvatar?: string
   uploadedDate: string
-  shortDescription: string
+  shortDescription?: string
   duration: number
   views: number
-  uploaded: number
   isShort: boolean
 }
 
