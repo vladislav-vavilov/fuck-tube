@@ -54,3 +54,21 @@ export interface Playlist {
   videos: number
   relatedStreams: VideoCard[]
 }
+
+type Tab = {
+  name: string
+  data: string
+}
+
+export interface Channel {
+  id: string
+  name: string
+  avatarUrl: string
+  bannerUrl: string
+  description: string
+  nextpage: string
+  subscriberCount: number
+  verified: boolean
+  relatedStreams: VideoCard[]
+  tabs: Tab[]
+}

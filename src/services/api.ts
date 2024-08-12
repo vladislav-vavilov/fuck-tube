@@ -1,11 +1,11 @@
 import { API_URL } from '@/constants'
-import { Filter, Playlist, SearchResult } from '@/types'
+import { Filter, Playlist, SearchResult, Channel } from '@/types'
 
 type GetSearchResults = (
   pageParam: string | null,
   query: string,
   filter: Filter
-) => Promise<SearchResult | null>
+) => Promise<SearchResult>
 
 export const getSearchResults: GetSearchResults = async (
   pageParam,
@@ -27,6 +27,21 @@ export const getPlaylist = async (
   const URL = pageParam
     ? `${API_URL}/nextpage/playlists/${playlistId}?nextpage=${pageParam}`
     : `${API_URL}/playlists/${playlistId}`
+
+  const res = await fetch(URL)
+  const data = await res.json()
+
+  if (data.hasOwnProperty('error')) throw new Error(data.error)
+  return data
+}
+
+export const getChannel = async (
+  channelId: string,
+  pageParam: string | null = null
+): Promise<Channel> => {
+  const URL = pageParam
+    ? `${API_URL}/nextpage/channel/${channelId}?nextpage=${pageParam}`
+    : `${API_URL}/channel/${channelId}`
 
   const res = await fetch(URL)
   const data = await res.json()

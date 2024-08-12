@@ -1,12 +1,10 @@
 import { Error } from '../Illustrations'
+import { Message } from '../Message'
 
-export const PlaylistError = () => {
+export const Playlistfrror = () => {
   return (
-    <div className='mt-[10vh] flex flex-col items-center justify-center'>
-      <Error.Robot />
-      <h2 className='text-center text-2xl font-medium'>
-        It seems like an error occurred
-      </h2>
-    </div>
+    <Message illustration={<Error.Robot />}>
+      It seems like an error has occurred
+    </Message>
   )
 }
