@@ -47,7 +47,7 @@ export const Playlist: FC = () => {
     <div ref={ref} className='mx-auto h-full w-full max-w-7xl px-4'>
       {!firstPage && isFetched && <PlaylistEmpty />}
       <div className='flex gap-4'>
-        {isFetching && <PlaylistLoading />}
+        {isFetching && !firstPage && <PlaylistLoading />}
         {firstPage && (
           <>
             <PlaylistInfo

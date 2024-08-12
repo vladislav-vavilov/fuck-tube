@@ -15,7 +15,7 @@ export const SearchResultsItems: FC = () => {
   const query = searchParams.get('search_query') || ''
   const filter = (searchParams.get('filter') as Filter) || 'all'
 
-  const { data, isFetching, fetchNextPage, isFetchingNextPage } =
+  const { data, isPending, isFetching, isFetched, fetchNextPage } =
     useInfiniteQuery({
       queryKey: [query, filter],
       queryFn: ({ pageParam }: { pageParam: string | null }) => {
@@ -26,13 +26,13 @@ export const SearchResultsItems: FC = () => {
     })
 
   const ref = useReachEnd<HTMLDivElement>(() => {
-    if (!isFetchingNextPage) fetchNextPage()
+    if (!isFetching) fetchNextPage()
   })
 
-  if (isFetching) return <CardSkeletons />
+  if (isPending) return <CardSkeletons />
 
   const pages = data?.pages ?? []
-  if (!pages.length && !isFetching) return <SearchResultsEmpty />
+  if (!pages.length && isFetched) return <SearchResultsEmpty />
 
   return (
     <div ref={ref} className='flex flex-col gap-4'>
