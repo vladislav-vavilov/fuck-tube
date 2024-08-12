@@ -21,9 +21,14 @@ export const getSearchResults: GetSearchResults = async (
 }
 
 export const getPlaylistInfo = async (
-  playlistId: string
+  playlistId: string,
+  pageParam: string | null = null
 ): Promise<PlaylistInfo> => {
-  const res = await fetch(`${API_URL}/playlists/${playlistId}`)
+  const URL = pageParam
+    ? `${API_URL}/nextpage/playlists/${playlistId}?nextpage=${pageParam}`
+    : `${API_URL}/playlists/${playlistId}`
+
+  const res = await fetch(URL)
   const data = await res.json()
 
   if (data.hasOwnProperty('error')) throw new Error(data.error)

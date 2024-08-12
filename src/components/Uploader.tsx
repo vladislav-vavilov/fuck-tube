@@ -7,7 +7,7 @@ import { HiMiniCheckBadge } from 'react-icons/hi2'
 interface UploaderProps {
   name: string
   url: string | null
-  verified: boolean
+  verified?: boolean
   avatar?: string
   className?: string
 }
@@ -15,7 +15,7 @@ interface UploaderProps {
 export const Uploader: FC<UploaderProps> = ({
   name,
   url,
-  verified,
+  verified = false,
   avatar,
   className
 }) => {

@@ -36,9 +36,9 @@ export const SearchResultsItems: FC = () => {
 
   return (
     <div ref={ref} className='flex flex-col gap-4'>
-      {pages.map((data, index) => (
+      {pages.map((page, index) => (
         <Fragment key={index}>
-          {data?.items.map((item) => (
+          {page?.items.map((item) => (
             <SearchResultsItem key={item.url} {...item} />
           ))}
         </Fragment>
