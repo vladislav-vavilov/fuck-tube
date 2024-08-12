@@ -1,4 +1,4 @@
-import { Playlist } from '@/types'
+import { PlaylistCard as Playlist } from '@/types'
 import { FC } from 'react'
 import { Card } from '@/components/Cards/Card'
 import { Uploader } from '@/components/Uploader'
