@@ -1,11 +1,11 @@
-import { Empty } from '../Illustrations'
+import { Error } from '../Illustrations'
 
-export const PlaylistInfoEmpty = () => {
+export const PlaylistError = () => {
   return (
     <div className='mt-[10vh] flex flex-col items-center justify-center'>
-      <Empty.Box />
+      <Error.Robot />
       <h2 className='text-center text-2xl font-medium'>
-        It seems like there's nothing here
+        It seems like an error occurred
       </h2>
     </div>
   )

@@ -1,5 +1,5 @@
 import { API_URL } from '@/constants'
-import { Filter, PlaylistInfo, SearchResult } from '@/types'
+import { Filter, Playlist, SearchResult } from '@/types'
 
 type GetSearchResults = (
   pageParam: string | null,
@@ -20,10 +20,10 @@ export const getSearchResults: GetSearchResults = async (
   return await res.json()
 }
 
-export const getPlaylistInfo = async (
+export const getPlaylist = async (
   playlistId: string,
   pageParam: string | null = null
-): Promise<PlaylistInfo> => {
+): Promise<Playlist> => {
   const URL = pageParam
     ? `${API_URL}/nextpage/playlists/${playlistId}?nextpage=${pageParam}`
     : `${API_URL}/playlists/${playlistId}`

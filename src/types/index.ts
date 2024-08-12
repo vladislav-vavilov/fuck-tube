@@ -8,7 +8,7 @@ export interface Card {
   uploaderVerified: boolean
 }
 
-export interface Video extends Card {
+export interface VideoCard extends Card {
   type: 'stream'
   title: string
   uploaderAvatar: string
@@ -20,14 +20,14 @@ export interface Video extends Card {
   isShort: boolean
 }
 
-export interface Playlist extends Card {
+export interface PlaylistCard extends Card {
   type: 'playlist'
   playlistType: string
   name: string
   videos: number
 }
 
-export interface Channel extends Pick<Card, 'url' | 'thumbnail'> {
+export interface ChannelCard extends Pick<Card, 'url' | 'thumbnail'> {
   type: 'channel'
   name: string
   subscribers: number
@@ -36,13 +36,13 @@ export interface Channel extends Pick<Card, 'url' | 'thumbnail'> {
 }
 
 export interface SearchResult {
-  items: (Video | Playlist | Channel)[]
+  items: (VideoCard | PlaylistCard | ChannelCard)[]
   nextpage: string
 }
 
 export type Filter = (typeof filters)[number]['value']
 
-export interface PlaylistInfo {
+export interface Playlist {
   name: string
   thumbnailUrl: string
   description: string
@@ -52,5 +52,5 @@ export interface PlaylistInfo {
   uploaderUrl: string
   uploaderAvatar: string
   videos: number
-  relatedStreams: Video[]
+  relatedStreams: VideoCard[]
 }

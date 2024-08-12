@@ -12,6 +12,6 @@ export async function generateMetadata({ searchParams }: Params) {
   }
 }
 
-export default async function SearchResults() {
+export default async function SearchResultsPage() {
   return <SearchResultsItems />
 }

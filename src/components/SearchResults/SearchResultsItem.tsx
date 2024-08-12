@@ -1,8 +1,12 @@
-import { Channel, Playlist, Video } from '@/types'
+import type {
+  ChannelCard as Channel,
+  PlaylistCard as Playlist,
+  VideoCard as Video
+} from '@/types'
 import { FC } from 'react'
-import { VideoCard } from '@/components/Cards/VideoCard'
-import { PlaylistCard } from '@/components/Cards/PlaylistCard'
-import { ChannelCard } from '@/components/Cards/ChannelCard'
+import { VideoCard } from '../Cards/VideoCard'
+import { PlaylistCard } from '../Cards/PlaylistCard'
+import { ChannelCard } from '../Cards/ChannelCard'
 
 export const SearchResultsItem: FC<Video | Playlist | Channel> = ({
   ...props

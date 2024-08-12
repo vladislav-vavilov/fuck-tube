@@ -1,5 +1,5 @@
-import { PlaylistInfo } from '@/components/PlaylistInfo/PlaylistInfo'
-import { getPlaylistInfo } from '@/services/api'
+import { Playlist } from '@/components/Playlist/Playlist'
+import { getPlaylist } from '@/services/api'
 
 interface PlaylistProps {
   searchParams: { [key: string]: string | undefined }
@@ -7,13 +7,13 @@ interface PlaylistProps {
 
 export async function generateMetadata({ searchParams }: PlaylistProps) {
   try {
-    const data = await getPlaylistInfo(searchParams.list ?? '')
+    const data = await getPlaylist(searchParams.list ?? '')
     return { title: `${data.name ? data.name : 'Playlist'} - TouYube` }
   } catch {
     return { title: 'Playlist - TouYube' }
   }
 }
 
-export default async function Playlist() {
-  return <PlaylistInfo />
+export default async function PlaylistPage() {
+  return <Playlist />
 }

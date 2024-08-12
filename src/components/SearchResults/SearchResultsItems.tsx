@@ -8,7 +8,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { Filter } from '@/types'
 import { useReachEnd } from '@/hooks/useReachEnd'
 import { getSearchResults } from '@/services/api'
-import { SearchResultsLoading } from './SearchResultsLoading'
+import { CardSkeletons } from '../Cards/CardSkeletons'
 
 export const SearchResultsItems: FC = () => {
   const searchParams = useSearchParams()
@@ -29,7 +29,7 @@ export const SearchResultsItems: FC = () => {
     if (!isFetchingNextPage) fetchNextPage()
   })
 
-  if (isFetching) return <SearchResultsLoading />
+  if (isFetching) return <CardSkeletons />
 
   const pages = data?.pages ?? []
   if (!pages.length && !isFetching) return <SearchResultsEmpty />

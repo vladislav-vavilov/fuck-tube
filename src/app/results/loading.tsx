@@ -1,5 +1,5 @@
-import { SearchResultsLoading } from '@/components/SearchResults/SearchResultsLoading'
+import { CardSkeletons } from '@/components/Cards/CardSkeletons'
 
 export default function Loading() {
-  return <SearchResultsLoading />
+  return <CardSkeletons />
 }
