@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { CardSkeletonSmall } from '../Cards/CardSkeletonSmall'
 
 export const ChannelLoading: FC = () => {
   return (
@@ -16,11 +17,7 @@ export const ChannelLoading: FC = () => {
       <hr className='skeleton my-4 border-neutral-600' />
       <div className='grid grid-cols-4 gap-x-4 gap-y-10'>
         {Array.from({ length: 20 }).map((_, index) => (
-          <div key={index} className='flex flex-col gap-2'>
-            <div className='skeleton h-44 w-full' />
-            <div className='skeleton h-4 w-3/4' />
-            <div className='skeleton h-4 w-1/2' />
-          </div>
+          <CardSkeletonSmall key={index} />
         ))}
       </div>
     </div>
