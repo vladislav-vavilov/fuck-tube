@@ -10,9 +10,9 @@ interface ChannelPageProps {
 export async function generateMetadata({ params }: ChannelPageProps) {
   try {
     const data = await getChannel(params.id ?? '')
-    return { title: `${data.name ? data.name : 'Channel'} - TouYube` }
+    return { title: `${data.name ? data.name : 'Channel'} - YouRube` }
   } catch {
-    return { title: 'Channel - TouYube' }
+    return { title: 'Channel - YouRube' }
   }
 }
 

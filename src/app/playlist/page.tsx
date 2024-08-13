@@ -8,9 +8,9 @@ interface PlaylistPageProps {
 export async function generateMetadata({ searchParams }: PlaylistPageProps) {
   try {
     const data = await getPlaylist(searchParams.list ?? '')
-    return { title: `${data.name ? data.name : 'Playlist'} - TouYube` }
+    return { title: `${data.name ? data.name : 'Playlist'} - YouRube` }
   } catch {
-    return { title: 'Playlist - TouYube' }
+    return { title: 'Playlist - YouRube' }
   }
 }
 

@@ -35,7 +35,7 @@ export const SearchResultsItems: FC = () => {
   if (!pages.length && isFetched) return <SearchResultsEmpty />
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex w-full flex-col gap-4'>
       {pages.map((page, index) => (
         <Fragment key={index}>
           {page?.items.map((item) => (

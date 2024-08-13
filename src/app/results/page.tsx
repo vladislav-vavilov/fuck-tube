@@ -10,7 +10,7 @@ export async function generateMetadata({
   const query = searchParams.search_query
 
   return {
-    title: `${query ? query : 'Results'} - TouYube`
+    title: `${query ? query : 'Results'} - YouRube`
   }
 }
 
