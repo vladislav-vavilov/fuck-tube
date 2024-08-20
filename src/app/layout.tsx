@@ -8,8 +8,8 @@ import { Toaster } from 'sonner'
 const montserrat = Montserrat({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'TuoYube',
-  description: 'YouTube alternative'
+  title: 'YouRube',
+  description: 'YouRube - YouTube alternative'
 }
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
       >
         <Providers>
           <Header />
-          {children}
+          <div className='px-4'>{children}</div>
           <Toaster theme='dark' richColors closeButton />
         </Providers>
       </body>
